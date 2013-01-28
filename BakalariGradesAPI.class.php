@@ -124,30 +124,31 @@ class BakalariGradesAPI {
     return $html;
   }
 
-  public function getGrades($subjectID) {
-    $viewstate = $this->fetchViewstate();
-    $this->login($viewstate);
-
-    // Grades page
-    $gradesHtml = $this->fetchGrades();
-    $viewstate = $this->parseViewstate($gradesHtml);
-    $eventvalidation = $this->parseEventValidation($gradesHtml);
-
-    $html = $this->fetchSubject($subjectID, $viewstate, $eventvalidation);
-
+  private function parseGrades($html) {
     $grades = array(array());
     $i = 0;
 
     // TODO: parsing refactoring
     $gradeNumberPostion3 = null;
     while (strpos ($html, '<div class="detznb">', $gradeNumberPostion3) != false) {
-      $gradeNumberPostion1 = strpos ($html, '<div class="detznb">', $gradeNumberPostion3);
-      $gradeNumberPostion2 = strpos ($html, '</div>', $gradeNumberPostion1);
-      $grades[$i][0] = substr($html, $gradeNumberPostion1+20, $gradeNumberPostion2 - $gradeNumberPostion1 - 21);
 
-      $gradeDescriptionPosition1 = strpos ($html, '<td class="detpozn2">', $gradeNumberPostion3);
+      $gradeStart = '<div class="detznb">'; // Bakalari libver 31.8.2012
+      $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
+      if (!$gradeNumberPostion1) {
+        $gradeStart = '<div class="detzn">'; // Bakalari libver ?
+        $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
+      }
+      $gradeNumberPostion2 = strpos ($html, '</div>', $gradeNumberPostion1);
+      $grades[$i][0] = substr($html, $gradeNumberPostion1 + strlen($gradeStart), $gradeNumberPostion2 - $gradeNumberPostion1 - strlen($gradeStart));
+
+      $descriptionStart = '<td class="detpozn2">'; // Bakalari libver 31.8.2012
+      $gradeDescriptionPosition1 = strpos ($html, $descriptionStart, $gradeNumberPostion3);
+      if (!$gradeDescriptionPosition1) {
+        $descriptionStart = '<td class="detcaption">'; // Bakalari libver ?
+        $gradeDescriptionPosition1 = strpos ($html, $descriptionStart, $gradeNumberPostion3);
+      }
       $gradeDescriptionPosition2 = strpos ($html, '</td>', $gradeDescriptionPosition1);
-      $grades[$i][1] = htmlspecialchars(substr($html, $gradeDescriptionPosition1 + 22, $gradeDescriptionPosition2 - $gradeDescriptionPosition1 - 23));
+      $grades[$i][1] = htmlspecialchars(substr($html, $gradeDescriptionPosition1 + strlen($descriptionStart), $gradeDescriptionPosition2 - $gradeDescriptionPosition1 - strlen($descriptionStart)));
 
       $gradeDatePosition1 = strpos ($html, '<td nowrap class="detdatum">', $gradeNumberPostion3);
       $gradeDatePosition2 = strpos ($html, '</td>', $gradeDatePosition1);
@@ -156,6 +157,31 @@ class BakalariGradesAPI {
       $gradeNumberPostion3 = $gradeNumberPostion1 + 35;
       $i++;
      }
+
+    return $grades;
+  }
+
+  public function getGrades($subjectID) {
+    // Viewstate
+    $viewstate = $this->fetchViewstate();
+
+    // Login
+    $this->login($viewstate);
+    $this->login($viewstate);
+
+    // Grades page
+    // TODO: Does not return grades at first call, why?
+    $html = $this->fetchGrades();
+    $html = $this->fetchGrades();
+    $viewstate = $this->parseViewstate($html);
+    $eventvalidation = $this->parseEventValidation($html);
+
+    // Subject page
+    // TODO: Returns date only after browser page refresh, when cookie file is created, why?
+    $html = $this->fetchSubject($subjectID, $viewstate, $eventvalidation);
+
+    // Parse grades
+    $grades = $this->parseGrades($html);
     return $grades;
   }
 
