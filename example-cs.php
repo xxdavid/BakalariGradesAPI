@@ -10,7 +10,7 @@
   
 <?
 $bakalariUsername = "VaseUzivatelskeJmeno"; //Uživatelské jméno na Bakalářích
-$bakalariPassword = "VaseHeslo"; //Hesla na Bakalářích
+$bakalariPassword = "VaseHeslo"; //Heslo na Bakalářích
 $bakalariHost = "AdresaBakalaru"; //Základní adresa Bakalářů (bez konkretního souboru); např. http://www.zssirotkova.cz:81 nebo http://bakalari.gfpvm.cz/bakaweb nebo http://bakalari.gfxs.cz ; POZOR: adresa musí být bez lomítka na konci 
 $bakalariCookie = "cookies.txt"; //soubor s cookies
 $bakalariSubjectID = "IDPredmetu"; //ID předmětu lze zjistit například ve FireBugu po kliknutí na předmět v kolonce pod POST jako parametr EVENTTARGET, ovšem bez "ctl00$cphmain$", lze také zjistit z zdrojáku prehled.aspx?s=2 - před názvem předmětu ve tvaru "javascript:__doPostBack(&#39;ctl00$cphmain$0R&#39;,&#39;&#39;)"; měly by to být 2 znaky
