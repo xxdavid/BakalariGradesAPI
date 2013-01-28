@@ -125,8 +125,8 @@ class BakalariGradesAPI {
   }
 
   public function getGrades($subjectID) {
-    //$viewstate = $this->fetchViewstate();
-    //$this->login($viewstate);
+    $viewstate = $this->fetchViewstate();
+    $this->login($viewstate);
 
     // Grades page
     $gradesHtml = $this->fetchGrades();
@@ -134,21 +134,20 @@ class BakalariGradesAPI {
     $eventvalidation = $this->parseEventValidation($gradesHtml);
 
     $html = $this->fetchSubject($subjectID, $viewstate, $eventvalidation);
-    var_dump($html);
 
     $grades = array(array());
     $i = 0;
 
     // TODO: parsing refactoring
-    $gradeNumberPostion3 = 0;
+    $gradeNumberPostion3 = null;
     while (strpos ($html, '<div class="detznb">', $gradeNumberPostion3) != false) {
       $gradeNumberPostion1 = strpos ($html, '<div class="detznb">', $gradeNumberPostion3);
       $gradeNumberPostion2 = strpos ($html, '</div>', $gradeNumberPostion1);
       $grades[$i][0] = substr($html, $gradeNumberPostion1+20, $gradeNumberPostion2 - $gradeNumberPostion1 - 21);
 
-      $gradeDescriptionPosition1 = strpos ($html, '<td class="detcaption">', $gradeNumberPostion3);
+      $gradeDescriptionPosition1 = strpos ($html, '<td class="detpozn2">', $gradeNumberPostion3);
       $gradeDescriptionPosition2 = strpos ($html, '</td>', $gradeDescriptionPosition1);
-      $grades[$i][1] = htmlspecialchars(substr($html, $gradeDescriptionPosition1 + 24, $gradeDescriptionPosition2 - $gradeDescriptionPosition1 - 24));
+      $grades[$i][1] = htmlspecialchars(substr($html, $gradeDescriptionPosition1 + 22, $gradeDescriptionPosition2 - $gradeDescriptionPosition1 - 23));
 
       $gradeDatePosition1 = strpos ($html, '<td nowrap class="detdatum">', $gradeNumberPostion3);
       $gradeDatePosition2 = strpos ($html, '</td>', $gradeDatePosition1);
