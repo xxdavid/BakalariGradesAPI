@@ -6,13 +6,13 @@
   <title>BakalariGradesAPI - example usage</title>
   </head>
   <body>
-  
-  
-<?
-$bakalariUsername = "YourUsername"; 
-$bakalariPassword = "YourPassword"; 
-$bakalariHost = "Host"; 
-$bakalariCookie = "cookies.txt"; 
+
+
+<?php
+$bakalariUsername = "YourUsername";
+$bakalariPassword = "YourPassword";
+$bakalariHost = "Host";
+$bakalariCookie = "cookies.txt";
 $bakalariSubjectID = "SubjectId";
 
 require("BakalariGradesAPI.class.php");
