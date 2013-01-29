@@ -50,7 +50,7 @@ class BakalariGradesAPI {
     // Getting Viewstate and Cookies
     $ch1 = curl_init();
     curl_setopt($ch1, CURLOPT_COOKIEJAR, $this->cookie);
-    curl_setopt($ch1, CURLOPT_COOKIEFILE, $this->cookie);
+    //curl_setopt($ch1, CURLOPT_COOKIEFILE, $this->cookie);
     curl_setopt($ch1, CURLOPT_URL,$this->host."/login.aspx");
     curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch1, CURLOPT_HEADER, true);
@@ -63,7 +63,7 @@ class BakalariGradesAPI {
   private function login($viewstate) {
     // Logging in
     $ch2 = curl_init();
-    curl_setopt($ch2, CURLOPT_COOKIEJAR, $this->cookie);
+    //curl_setopt($ch2, CURLOPT_COOKIEJAR, $this->cookie);
     curl_setopt($ch2, CURLOPT_COOKIEFILE, $this->cookie);
     curl_setopt($ch2, CURLOPT_URL, $this->host . "/login.aspx");
     curl_setopt($ch2, CURLOPT_POST, 1);
@@ -88,7 +88,7 @@ class BakalariGradesAPI {
   private function fetchGrades() {
     $ch3 = curl_init();
     curl_setopt($ch3, CURLOPT_RETURNTRANSFER,1);
-    curl_setopt($ch3, CURLOPT_COOKIEJAR, $this->cookie);
+    //curl_setopt($ch3, CURLOPT_COOKIEJAR, $this->cookie);
     curl_setopt($ch3, CURLOPT_COOKIEFILE, $this->cookie);
     curl_setopt($ch3, CURLOPT_URL,$this->host."/prehled.aspx?s=2");
     $html = curl_exec($ch3);
@@ -99,25 +99,24 @@ class BakalariGradesAPI {
   private function fetchSubject($subjectID, $viewstate, $eventvalidation) {
     //Subject page
     $ch4 = curl_init();
-    curl_setopt($ch4, CURLOPT_COOKIEJAR, $this->cookie);
+    //curl_setopt($ch4, CURLOPT_COOKIEJAR, $this->cookie);
     curl_setopt($ch4, CURLOPT_COOKIEFILE, $this->cookie);
     curl_setopt($ch4, CURLOPT_URL,$this->host."/prehled.aspx?s=2");
     curl_setopt($ch4, CURLOPT_POST, 1);
     $params = array();
-    $params['__EVENTTARGET'] = 'ctl00$cphmain$' . 'roundprub$ ' . $subjectID;
+    $params['__EVENTTARGET'] = $subjectID; 
     $params['__EVENTARGUMENT'] = '';
     $params['__LASTFOCUS'] = '';
     $params['__VIEWSTATE'] = $viewstate;
     $params['__EVENTVALIDATION'] = $eventvalidation;
+    $params['ctl00$cphmain$Flyout2$Checkdatumy'] = 'on';  // must be sent - libver 17.5.2012
     //$params['hlavnimenuSI'] = '2i0';
     //$params['ctl00$cphmain$listdoba'] = 'pololeti';
     //$params['ctl00$cphmain$Flyout2$listrazeni2'] = '0';
     //$params['ctl00$cphmain$Flyout2$Checktypy'] = 'on';
-    //$params['ctl00$cphmain$Flyout2$Checkdatumy'] = 'on';
     $implodedParams = $this->implodeParams($params);
-
     curl_setopt($ch4, CURLOPT_POSTFIELDS, $implodedParams);
-    curl_setopt($ch4, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
     //curl_setopt($ch4, CURLOPT_HEADER, true);
     $html = curl_exec($ch4);
     curl_close($ch4);
@@ -130,34 +129,42 @@ class BakalariGradesAPI {
 
     // TODO: parsing refactoring
     $gradeNumberPostion3 = null;
-    while (strpos ($html, '<div class="detznb">', $gradeNumberPostion3) != false) {
-
+    
+    $gradeStart = '<div class="detznb">'; // Bakalari libver 31.8.2012
+    $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
+      if (!$gradeNumberPostion1) {
+        $gradeStart = '<div class="detzn">'; // Bakalari libver 17.5.2012
+        $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
+      }
+    
+    
+    while (strpos ($html, $gradeStart, $gradeNumberPostion3) != false) {
+    
       $gradeStart = '<div class="detznb">'; // Bakalari libver 31.8.2012
       $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
       if (!$gradeNumberPostion1) {
-        $gradeStart = '<div class="detzn">'; // Bakalari libver ?
+        $gradeStart = '<div class="detzn">'; // Bakalari libver 17.5.2012
         $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
       }
       $gradeNumberPostion2 = strpos ($html, '</div>', $gradeNumberPostion1);
       $grades[$i][0] = substr($html, $gradeNumberPostion1 + strlen($gradeStart), $gradeNumberPostion2 - $gradeNumberPostion1 - strlen($gradeStart));
-
       $descriptionStart = '<td class="detpozn2">'; // Bakalari libver 31.8.2012
       $gradeDescriptionPosition1 = strpos ($html, $descriptionStart, $gradeNumberPostion3);
       if (!$gradeDescriptionPosition1) {
-        $descriptionStart = '<td class="detcaption">'; // Bakalari libver ?
+        $descriptionStart = '<td class="detcaption">'; // Bakalari libver 17.5.2012
         $gradeDescriptionPosition1 = strpos ($html, $descriptionStart, $gradeNumberPostion3);
       }
       $gradeDescriptionPosition2 = strpos ($html, '</td>', $gradeDescriptionPosition1);
       $grades[$i][1] = htmlspecialchars(substr($html, $gradeDescriptionPosition1 + strlen($descriptionStart), $gradeDescriptionPosition2 - $gradeDescriptionPosition1 - strlen($descriptionStart)));
-
-      $gradeDatePosition1 = strpos ($html, '<td nowrap class="detdatum">', $gradeNumberPostion3);
+      
+      $dateStart = '<td nowrap class="detdatum">';
+      $gradeDatePosition1 = strpos ($html, $dateStart, $gradeNumberPostion3);
       $gradeDatePosition2 = strpos ($html, '</td>', $gradeDatePosition1);
-      $grades[$i][2] = substr($html, $gradeDatePosition1 + 28, $gradeDatePosition2 - $gradeDatePosition1 - 28);
-
+      $grades[$i][2] = substr($html, $gradeDatePosition1 + strlen($dateStart), $gradeDatePosition2 - $gradeDatePosition1 - strlen($dateStart)); 
+      
       $gradeNumberPostion3 = $gradeNumberPostion1 + 35;
       $i++;
      }
-
     return $grades;
   }
 
@@ -167,12 +174,12 @@ class BakalariGradesAPI {
 
     // Login
     $this->login($viewstate);
-    $this->login($viewstate);
+    $this->login($viewstate); // not need for libver 17.5.2012
 
     // Grades page
     // TODO: Does not return grades at first call, why?
     $html = $this->fetchGrades();
-    $html = $this->fetchGrades();
+    $html = $this->fetchGrades();   // not need for libver 17.5.2012
     $viewstate = $this->parseViewstate($html);
     $eventvalidation = $this->parseEventValidation($html);
 
