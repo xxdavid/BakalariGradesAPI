@@ -104,7 +104,7 @@ class BakalariGradesAPI {
     curl_setopt($ch4, CURLOPT_URL,$this->host."/prehled.aspx?s=2");
     curl_setopt($ch4, CURLOPT_POST, 1);
     $params = array();
-    $params['__EVENTTARGET'] = $subjectID; 
+    $params['__EVENTTARGET'] = $subjectID;
     $params['__EVENTARGUMENT'] = '';
     $params['__LASTFOCUS'] = '';
     $params['__VIEWSTATE'] = $viewstate;
@@ -129,17 +129,17 @@ class BakalariGradesAPI {
 
     // TODO: parsing refactoring
     $gradeNumberPostion3 = null;
-    
+
     $gradeStart = '<div class="detznb">'; // Bakalari libver 31.8.2012
     $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
       if (!$gradeNumberPostion1) {
         $gradeStart = '<div class="detzn">'; // Bakalari libver 17.5.2012
         $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
       }
-    
-    
+
+
     while (strpos ($html, $gradeStart, $gradeNumberPostion3) != false) {
-    
+
       $gradeStart = '<div class="detznb">'; // Bakalari libver 31.8.2012
       $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
       if (!$gradeNumberPostion1) {
@@ -156,12 +156,12 @@ class BakalariGradesAPI {
       }
       $gradeDescriptionPosition2 = strpos ($html, '</td>', $gradeDescriptionPosition1);
       $grades[$i][1] = htmlspecialchars(substr($html, $gradeDescriptionPosition1 + strlen($descriptionStart), $gradeDescriptionPosition2 - $gradeDescriptionPosition1 - strlen($descriptionStart)));
-      
+
       $dateStart = '<td nowrap class="detdatum">';
       $gradeDatePosition1 = strpos ($html, $dateStart, $gradeNumberPostion3);
       $gradeDatePosition2 = strpos ($html, '</td>', $gradeDatePosition1);
-      $grades[$i][2] = substr($html, $gradeDatePosition1 + strlen($dateStart), $gradeDatePosition2 - $gradeDatePosition1 - strlen($dateStart)); 
-      
+      $grades[$i][2] = substr($html, $gradeDatePosition1 + strlen($dateStart), $gradeDatePosition2 - $gradeDatePosition1 - strlen($dateStart));
+
       $gradeNumberPostion3 = $gradeNumberPostion1 + 35;
       $i++;
      }
@@ -174,7 +174,6 @@ class BakalariGradesAPI {
 
     // Login
     $this->login($viewstate);
-    $this->login($viewstate); // not need for libver 17.5.2012
 
     // Grades page
     // TODO: Does not return grades at first call, why?
@@ -184,7 +183,6 @@ class BakalariGradesAPI {
     $eventvalidation = $this->parseEventValidation($html);
 
     // Subject page
-    // TODO: Returns date only after browser page refresh, when cookie file is created, why?
     $html = $this->fetchSubject($subjectID, $viewstate, $eventvalidation);
 
     // Parse grades

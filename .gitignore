@@ -1,2 +1,4 @@
 cookie.txt
 example-custom.php
+*.sublime-project
+*.sublime-workspace
