@@ -1,0 +1,453 @@
+
+
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head><link rel="stylesheet" type="text/css" href="/BakaWEB/DXR.axd?r=1_3-iN4k5" /><link rel="stylesheet" type="text/css" href="/BakaWEB/DXR.axd?r=1_4-iN4k5" /><link rel="stylesheet" type="text/css" href="/BakaWEB/DXR.axd?r=1_2-iN4k5" /><link rel="stylesheet" type="text/css" href="/BakaWEB/DXR.axd?r=2_2-iN4k5" /><link rel="stylesheet" type="text/css" href="/BakaWEB/DXR.axd?r=2_0-iN4k5" /><title>
+    WEB Bakaláři
+</title><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta content="Bakaláři - webová aplikace pro školy" name="description" /><meta content="Bakalari, Bakaláři, matrika, rodiče, žáci, známky, klasifikace, rozvrh, webrodiče, webučitelé, komunikace, škola" name="keywords" /><link rel="stylesheet" href="master.css" type="text/css" media="screen" /><link rel="stylesheet" href="bakastyl.css" type="text/css" media="screen" /><link rel="stylesheet" href="ptstyl.css" type="text/css" media="print" /><link rel="stylesheet" href="nasstyl.css" type="text/css" media="screen" /><link rel="stylesheet" href="bakaznam.css" type="text/css" media="screen" />link rel="stylesheet" href="bakastyl12.css" type="text/css" media="screen" /><meta http-equiv="Expires" content="0" /><meta http-equiv="Pragma" content="no-cache" /><meta http-equiv="Cache-control" content="no-cache" />
+
+    <script type="text/javascript">
+
+
+        var RepWin = window.RepWin;
+
+        function OpenRWin(link, winName, wi, he) {
+            var retValue = true;
+            if (RepWin != null && !RepWin.closed) {
+                RepWin.focus();
+                RepWin.location.href = link.href;
+            }
+            else {
+                RepWin = window.open(link.href, winName, 'toolbar=no, menubar=no, location=no, directories=no, scrollbars=yes, resizable=yes, status=no, width=' + wi + ', height=' + he + '');
+                if (RepWin == null || typeof (RepWin) == "undefined")
+                    retValue = false;
+                else {
+                    link.target = winName;
+                    RepWin.focus();
+                }
+            }
+            return retValue;
+        }
+
+</script>
+
+
+<link href="App_Themes/tyrkysTheme/tyrkysstyl.css" type="text/css" rel="stylesheet" /></head>
+<body>
+<form method="post" action="prehled.aspx?s=2" id="formbaka">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['formbaka'];
+if (!theForm) {
+    theForm = document.formbaka;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<div class="aspNetHidden">
+
+    <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWEgLX6qbuBwLussqGAQLv3bicCQK7j9jkDALxh6buCQK2/byKBgLtnLb4BQLY6cKMCAKMiIHZCwL0/re4CgLQyty2CgKNwty2CgLnn9usCQL38PHCBQLo8PHCBQLp8PHCBQLq8PHCBQLr8PHCBXdB43pjyB2ujol3+kfg8HW3tJpEFjgqBwYrcUEsQHNm" />
+</div>
+
+<div id="stranka">
+<div id="hlavicka">
+<table class="hlavickatable">
+<tr><td valign="top" >
+<div class="hlavickaleva">
+<a href="prehled.aspx" >
+<img alt="" src="images/nilogo.gif" style="border-width:0px;"/>
+</a>
+</div>
+</td>
+ <td valign="top">
+  <div class="hlavickaprava">
+    <div class="nazevskoly">Gymnázium dr. A. Hrdličky Humpolec, Komenského 147</div>
+    <div class="pololetinadpis">1. pololetí šk. roku 2012/13</div>
+    <div class="globlogjmeno" >
+      <table class="logtable">
+        <tr>
+          <td>uživatel:</td><td style="width:100%;">žák</td>
+          <td class="logout"><a id="linklogout" href="login.aspx?s=-1">Odhlásit</a></td>
+        </tr>
+        <tr><td>jméno:</td><td style="width:100%;" class="logjmeno" colspan="2">
+          Skála Matouš, 7.O</td></tr>
+      </table>
+     </div>
+   </div>
+ </td>
+</tr></table>
+</div>
+<div id="hlavni">
+    <div id="panelmenu" class="pmenu">
+
+
+    <input type="hidden" id="hlavnimenuSI" name="hlavnimenuSI" value="2i0" /><script id="dxis_848146672" src="/BakaWEB/DXR.axd?r=1_44-iN4k5" type="text/javascript"></script><script id="dxis_568785954" src="/BakaWEB/DXR.axd?r=1_76-iN4k5" type="text/javascript"></script><script id="dxis_1431375967" src="/BakaWEB/DXR.axd?r=1_69-iN4k5" type="text/javascript"></script><script id="dxis_642691312" src="/BakaWEB/DXR.axd?r=1_74-iN4k5" type="text/javascript"></script><script id="dxis_645655596" src="/BakaWEB/DXR.axd?r=1_60-iN4k5" type="text/javascript"></script><script id="dxis_1099804912" src="/BakaWEB/DXR.axd?r=2_34-iN4k5" type="text/javascript"></script><script id="dxis_1851059244" src="/BakaWEB/DXR.axd?r=2_40-iN4k5" type="text/javascript"></script><div class="dxmLite dxm-ltr">
+        <div class="dxm-main dxm-horizontal phmenu" id="hlavnimenu" style="font-size:9pt;">
+            <ul class="dx dxm-image-l dxm-noImages dxm-gutter">
+                <li class="dxm-item" style="border-width:0px;"><div class="dxm-content dxm-hasText">
+                    <a class="dx" href="uvod.aspx" style="font-size:9pt;">&#218;vod</a>
+                </div></li><li class="dxm-spacing"></li><li class="dxm-item" style="border-width:0px;"><div class="dxm-content dxm-hasText">
+                    <a class="dx" href="osob.aspx" style="font-size:9pt;">Osobn&#237; &#250;daje</a>
+                </div></li><li class="dxm-spacing"></li><li class="dxm-item" style="border-width:0px;font-size:9pt;"><div class="dxm-content dxm-hasText">
+                    Klasifikace
+                </div></li><li class="dxm-spacing"></li><li class="dxm-item" style="border-width:0px;font-size:9pt;"><div class="dxm-content dxm-hasText">
+                    V&#253;uka
+                </div></li><li class="dxm-spacing"></li><li class="dxm-item" style="border-width:0px;font-size:9pt;"><div class="dxm-content dxm-hasText">
+                    Absence
+                </div></li><li class="dxm-spacing"></li><li class="dxm-item" style="border-width:0px;"><div class="dxm-content dxm-hasText">
+                    <a class="dx" href="prehled.aspx?s=17" style="font-size:9pt;">Pl&#225;n akc&#237;</a>
+                </div></li><li class="dxm-spacing"></li><li class="dxm-item" style="border-width:0px;font-size:9pt;"><div class="dxm-content dxm-hasText">
+                    Ankety
+                </div></li><li class="dxm-spacing"></li><li class="dxm-item" style="border-width:0px;font-size:9pt;"><div class="dxm-content dxm-hasText">
+                    Komens
+                </div></li><li class="dxm-spacing"></li><li class="dxm-item" style="border-width:0px;font-size:9pt;"><div class="dxm-content dxm-hasText">
+                    N&#225;stroje
+                </div></li><li class="dxm-spacing"></li><li class="dxm-item" style="border-width:0px;"><div class="dxm-content dxm-hasText">
+                    a class="dx" href="prehled.aspx?s=-1" style="font-size:9pt;">Odhl&#225;sit</a>
+                </div></li>
+            </ul>
+        </div><b class="dx-clear"></b><div id="hlavnimenu_DXM1_" style="z-index:20000;display:none;">
+            <div class="dxm-shadow dxm-popup pimenu" style="font-size:9pt;">
+                <ul class="dx dxm-noImages">
+                    <li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="osob.aspx" style="font-size:9pt;">Přehled osobn&#237;ch &#250;dajů</a>
+                    </div><b class="dx-clear"></b></li>
+                </ul>
+            </div>
+        </div><div id="hlavnimenu_DXM2_" style="z-index:20000;display:none;">
+            <div class="dxm-shadow dxm-popup pimenu" style="font-size:9pt;">
+                <ul class="dx dxm-noImages">
+                    <li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="prehled.aspx?s=2" style="font-size:9pt;">Průběžn&#225; klasifikace</a>
+                    </div><b class="dx-clear"></b></li><li class="dxm-spacing"></li><li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="prehled.aspx?s=5" style="font-size:9pt;">V&#253;chovn&#225; opatřen&#237;</a>
+                    </div><b class="dx-clear"></b></li><li class="dxm-spacing"></li><li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="prehled.aspx?s=26" style="font-size:9pt;">Opravn&#233; zkoušky</a>
+                    </div><b class="dx-clear"></b></li>
+                </ul>
+            </div>
+        </div><div id="hlavnimenu_DXM3_" style="z-index:20000;display:none;">
+            <div class="dxm-shadow dxm-popup pimenu" style="font-size:9pt;">
+                <ul class="dx dxm-noImages">
+                    <li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="prehled.aspx?s=6" style="font-size:9pt;">Rozvrh</a>
+                    </div><b class="dx-clear"></b></li><li class="dxm-spacing"></li><li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="prehled.aspx?s=621" style="font-size:9pt;">Dom&#225;c&#237; &#250;koly</a>
+                    </div><b class="dx-clear"></b></li><li class="dxm-spacing"></li><li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="prehled.aspx?s=7" style="font-size:9pt;">Přehled předmětů</a>
+                    </div><b class="dx-clear"></b></li>
+                </ul>
+            </div>
+        </div><div id="hlavnimenu_DXM4_" style="z-index:20000;display:none;">
+            <div class="dxm-shadow dxm-popup pimenu" style="font-size:9pt;">
+                <ul class="dx dxm-noImages">
+                    <li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="prehled.aspx?s=3" style="font-size:9pt;">Průběžn&#225; absence</a>
+                    </div><b class="dx-clear"></b></li><li class="dxm-spacing"></li><li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="prehled.aspx?s=9" style="font-size:9pt;">Zameškanost v předmětech</a>
+                    </div><b class="dx-clear"></b></li>
+                </ul>
+            </div>
+        </div><div id="hlavnimenu_DXM6_" style="z-index:20000;display:none;">
+            <div class="dxm-shadow dxm-popup pimenu" style="font-size:9pt;">
+                <ul class="dx dxm-noImages">
+                    <li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="anketyo.aspx" style="font-size:9pt;">Vyplňov&#225;n&#237; anket</a>
+                    </div><b class="dx-clear"></b></li>
+                </ul>
+            </div>
+        </div><div id="hlavnimenu_DXM7_" style="z-index:20000;display:none;">
+            <div class="dxm-shadow dxm-popup pimenu" style="font-size:9pt;">
+                <ul class="dx dxm-noImages">
+                    <li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="nasten.aspx?l=no" style="font-size:9pt;">Poslat zpr&#225;vu</a>
+                    </div><b class="dx-clear"></b></li><li class="dxm-spacing"></li><li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="nasten.aspx?l=gr" style="font-size:9pt;">Přijat&#233; zpr&#225;vy</a>
+                    </div><b class="dx-clear"></b></li><li class="dxm-spacing"></li><li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="nasten.aspx?l=od" style="font-size:9pt;">Odeslan&#233; zpr&#225;vy</a>
+                    </div><b class="dx-clear"></b></li><li class="dxm-spacing"></li><li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="nasten.aspx?l=na" style="font-size:9pt;">N&#225;stěnka</a>
+                    </div><b class="dx-clear"></b></li>
+                </ul>
+            </div>
+        </div><div id="hlavnimenu_DXM10_" style="z-index:20000;display:none;">
+            <div class="dxm-shadow dxm-popup pimenu" style="font-size:9pt;">
+                <ul class="dx dxm-noImages">
+                    <li class="dxm-item dxm-subMenu" style="font-size:9pt;"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        Přehledy přihl&#225;šen&#237;
+                    </div><div class="dxm-popOut">
+                        <img class="dxWeb_mVerticalPopOut dxm-pImage" src="/BakaWEB/DXR.axd?r=1_5-iN4k5" alt=">" />
+                    </div><b class="dx-clear"></b></li><li class="dxm-spacing"></li><li class="dxm-item dxm-noSubMenu"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="servis.aspx?s=0" style="font-size:9pt;">Nastaven&#237;</a>
+                    </div><b class="dx-clear"></b></li>
+                </ul>
+            </div>
+        </div><div id="hlavnimenu_DXM10i1_" style="z-index:20002;display:none;">
+            <div class="dxm-shadow dxm-popup pimenu" style="font-size:9pt;">
+                <ul class="dx dxm-noImages">
+                    <li class="dxm-item"><div class="dxm-content dxm-hasText" style="padding-left:8pt;">
+                        <a class="dx" href="servis.aspx?s=10" style="font-size:9pt;">Moje přihl&#225;šen&#237;</a>
+                    </div><b class="dx-clear"></b></li>
+                </ul>
+            </div>
+        </div>
+    </div><script id="dxss_226066071" type="text/javascript">
+<!--
+aspxAddHoverItems('hlavnimenu',[[['dxm-hovered',''],['border-width:0px;',''],['DXI0_','DXI1_','DXI2_','DXI3_','DXI4_','DXI5_','DXI6_','DXI7_','DXI10_','DXI11_'],['','T'],[[''],[''],[''],[''],[''],[''],[''],[''],[''],['']],['Img','PImg']],[[''],[''],['DXME1_','DXMBC1_','DXME2_','DXMBC2_','DXME3_','DXMBC3_','DXME4_','DXMBC4_','DXME6_','DXMBC6_','DXME7_','DXMBC7_','DXME10_','DXMBC10_','DXME10i1_','DXMBC10i1_']],[['dxm-hovered',''],['','padding-left:8pt;'],['DXI1i0_','DXI2i0_','DXI2i2_','DXI2i3_','DXI3i0_','DXI3i3_','DXI3i4_','DXI4i0_','DXI4i1_','DXI6i1_','DXI7i0_','DXI7i1_','DXI7i2_','DXI7i3_','DXI10i1_','DXI10i1i0_','DXI10i2_'],['','T'],[[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],['',''],[''],['','']],['Img','PImg']]]);
+aspxAddSelectedItems('hlavnimenu',[[['dxm-selected',''],['border-width:0px;',''],['DXI0_','DXI1_','DXI2_','DXI3_','DXI4_','DXI5_','DXI6_','DXI7_','DXI10_','DXI11_'],['','T'],[[''],[''],[''],[''],[''],[''],[''],[''],[''],['']],['Img','PImg']],[['dxm-selected',''],['','padding-left:8pt;'],['DXI1i0_','DXI2i0_','DXI2i2_','DXI2i3_','DXI3i0_','DXI3i3_','DXI3i4_','DXI4i0_','DXI4i1_','DXI6i1_','DXI7i0_','DXI7i1_','DXI7i2_','DXI7i3_','DXI10i1_','DXI10i1i0_','DXI10i2_'],['','T'],[[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],[''],['',''],[''],['','']],['Img','PImg']]]);
+
+var dxo = new ASPxClientMenu('hlavnimenu');
+window['hlavnimenu'] = dxo;
+dxo.uniqueID = 'ctl00$hlavnimenu';
+dxo.liteRender=true;
+dxo.liteRenderData={'':[[0],[1],[2],[3],[4],[5],[6],[7],[10],[11]],'1':[[0]],'2':[[0],[2],[3]],'3':[[0],[3],[4]],'4':[[0],[1]],'6':[[1]],'7':[[0],[1],[2],[3]],'10':[[1],[2]],'10i1':[[0]]};
+dxo.appearAfter=10;
+dxo.allowSelectItem=true;
+dxo.shadowVisible=false;
+dxo.InlineInitialize();
+
+//-->
+</script>
+
+</div>
+
+
+
+    <script type="text/javascript">
+
+        function popup_Popup(s, e) {
+            var popupElement = s.GetCurrentPopupElement();
+
+            s.SetContentUrl("baktk.aspx?h="+popupElement.id);
+        }
+
+        </script>
+    <div>
+
+
+
+        <div id="cphmain_pravyprub" class="pravemenu">
+
+            <div class="pravemenu2">
+                <div class="cmout">
+                <div class="cminn">
+                 <div class="cmcenter">
+                        <span class="cmelem" title="Detailní přehled"><input id="cphmain_Checkdetail" type="checkbox" name="ctl00$cphmain$Checkdetail" checked="checked" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$cphmain$Checkdetail\&#39;,\&#39;\&#39;)&#39;, 0)" /><label for="cphmain_Checkdetail">Detail</label></span>
+                        <span class="aspNetDisabled cmelem" title="Zobrazit plánovanou klasifikaci"><input id="cphmain_Checkplan" type="checkbox" name="ctl00$cphmain$Checkplan" disabled="disabled" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$cphmain$Checkplan\&#39;,\&#39;\&#39;)&#39;, 0)" /><label for="cphmain_Checkplan">Plán</label></span>&nbsp;
+                    <select name="ctl00$cphmain$listdoba" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$cphmain$listdoba\&#39;,\&#39;\&#39;)&#39;, 0)" id="cphmain_listdoba" title="Zobrazit za období" class="cmelem">
+        <option selected="selected" value="pololeti">pololet&#237;</option>
+        <option value="týden 28.1. - 1.2.">t&#253;den 28.1. - 1.2.</option>
+        <option value="týden 21.1. - 25.1.">t&#253;den 21.1. - 25.1.</option>
+        <option value="měsíc leden">měs&#237;c leden</option>
+        <option value="měsíc prosinec">měs&#237;c prosinec</option>
+        <option value="zadané období">zadan&#233; obdob&#237;</option>
+        <option value="1. pololetí">1. pololet&#237;</option>
+        <option value="2. pololetí">2. pololet&#237;</option>
+
+    </select>
+                    <div id="cphmain_panelpmprub2" class="cmelem">
+
+                        <div id="cphmain_panelpmprub" style="float: left; margin-right: 5px;">
+
+                            <span id="cphmain_labelzprub">zobrazit</span>
+                            <img id="cphmain_Image1" src="images/sort-down2.gif" align="texttop" />
+
+        </div>
+                        <img id="cphmain_imageprubinfo" class="cmelem" src="images/info.gif" align="absbottom" />
+
+    </div>
+
+                    </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+    <div id="cphmain_Panelprub">
+
+         <div class="outround">
+ <table class="dxrpControl" cellspacing="0" cellpadding="0" id="cphmain_roundprub" style="border-collapse:collapse;border-collapse:separate;">
+        <tr>
+            <td valign="top"><table cellspacing="0" cellpadding="0" style="border-collapse:collapse;border-collapse:separate;">
+                <tr>
+                    <td style="width:5px;height:5px;"><img class="dxrpCI" src="App_Themes/tyrkysTheme/TopLeftCorner.png" alt="" style="height:5px;width:5px;" /></td><td class="dxrpTE" style="background-color:#5DE7F0;border-top-color:#8B8B8B;border-top-style:Solid;border-top-width:1px;"><div style="height:1px;width:1px;overflow:hidden;">
+
+                    </div></td><td style="width:5px;height:5px;">img class="dxrpCI" src="App_Themes/tyrkysTheme/TopRightCorner.png" alt="" style="height:5px;width:5px;" /></td>
+                </tr><tr>
+                    <td class="dxrpHLE" style="background-color:#5DE7F0;background-image:url(App_Themes/tyrkysTheme/HeaderLeftEdge.png);background-repeat:no-repeat;background-position:left bottom;border-left-color:#8B8B8B;border-left-style:None;border-left-width:1px;border-bottom-style:None;"><div style="height:1px;width:1px;overflow:hidden;">
+
+                    </div></td><td class="dxrpHeader" style="background-color:#5DE7F0;font-weight:bold;height:1%;border-bottom-style:None;padding-left:6px;padding-right:6px;padding-top:1px;padding-bottom:5px;background-image:url(App_Themes/tyrkysTheme/HeaderContent.png);background-repeat:repeat-x;background-position:left bottom;"><table cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse;border-collapse:separate;">
+                        <tr>
+                            <td class="dxrp" style="font-weight:bold;width:100%;">
+            <label class="dxeBase roundnadpis" id="cphmain_roundprub_HTC_labelnadpisprub_0">Průběžn&#225; klasifikace  1. pololet&#237;</label><script id="dxss_548433141" type="text/javascript">
+<!--
+aspxAddDisabledItems('cphmain_roundprub_HTC_labelnadpisprub_0',[[['dxeDisabled'],[''],['']]]);
+
+var dxo = new ASPxClientLabel('cphmain_roundprub_HTC_labelnadpisprub_0');
+window['labelnadpisprub'] = dxo;
+dxo.uniqueID = 'ctl00$cphmain$roundprub$HTC$TC$labelnadpisprub';
+dxo.InlineInitialize();
+
+//-->
+</script>
+        </td>
+                        </tr>
+                    </table></td><td class="dxrpHRE" style="background-color:#5DE7F0;background-image:url(App_Themes/tyrkysTheme/HeaderRightEdge.png);background-repeat:no-repeat;background-position:right bottom;border-right-color:#8B8B8B;border-right-style:None;border-right-width:1px;border-bottom-style:None;"><div style="height:1px;width:1px;overflow:hidden;">
+
+                    </div></td>
+                </tr><tr>
+                    <td class="dxrpLE" style="background-color:WhiteSmoke;border-left-color:#8B8B8B;border-left-style:Solid;border-left-width:1px;"><div style="height:1px;width:1px;overflow:hidden;">
+
+                    </div></td><td id="cphmain_roundprub_RPC" class="dxrp dxrpcontent" style="background-color:WhiteSmoke;padding-left:6px;padding-right:6px;padding-top:9px;padding-bottom:6px;">
+                                                                           <div class="roundmin"></div>
+
+
+                <table class="dettable"><tbody><tr><td class="detpredm">Německý jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">20.9.12</td><td class="detpozn2"> (ustni zkouseni)</td></tr><tr><td class="detpredm">Chemie</td><td><div class="detznb">3 </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum"></td><td class="detpozn2"></td></tr><tr><td class="detpredm">Český jazyk</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">9.10.12</td><td class="detpozn2"> (Teorie literatury)</td></tr><tr><td class="detpredm">Tělesná výchova</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">8.11.12</td><td class="detpozn2"> (skok daleký)</td></tr><tr><td class="detpredm">Informatika - ekonomika</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum">7.11.12</td><td class="detpozn2"> (marketing)</td></tr><tr><td class="detpredm">Matematika</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum">25.9.12</td><td class="detpozn2"> (rovnice s parametrem)</td></tr><tr><td class="detpredm">Základy společenských věd</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 4</td><td nowrap class="dettypp">Nízká důležitost</td><td nowrap class="detvaha">(váha 4)</td><td nowrap class="detdatum">2.10.12</td><td class="detpozn2"> (politologie, stát
+)</td></tr><tr><td class="detpredm">Konverzace v anglickém jazyce</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">10.12.12</td><td class="detpozn2"> (Reading)</td></tr><tr><td class="detpredm">Biologie</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">29.10.12</td><td class="detpozn2"></td></tr><tr><td class="detpredm">Informačně technologický základ</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum">26.9.12</td><td class="detpozn2"> (Test - střih videa)</td></tr><tr><td class="detpredm">Anglický jazyk</td><td><div class="detznb">1- </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum">10.10.12</td><td class="detpozn2"> (slovíčka unit 5)</td></tr><tr><td class="detpredm">Seminář a cvičení z matematiky</td><td><div class="detznbnova">2 </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum">29.10.12</td><td class="detpozn2"> (rovnice s parametrem)</td></tr><tr><td class="detpredm">Fyzika</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">20.9.12</td><td class="detpozn2"></td></tr><tr><td class="detpredm"></td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">9.10.12</td><td class="detpozn2"> (Elektrostatika)</td></tr><tr><td class="detpredm">Anglický jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">19.10.12</td><td class="detpozn2"> (Test Unit 5)</td></tr><tr><td class="detpredm">Informačně technologický základ</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">9.10.12</td><td class="detpozn2"> (Test - multimédia)</td></tr><tr><td class="detpredm">Dějepis</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum"></td><td class="detpozn2"></td></tr><tr><td class="detpredm">Biologie</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">12.11.12</td><td class="detpozn2"></td></tr><tr><td class="detpredm">Matematika</td><td><div class="detznb">1- </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">18.10.12</td><td class="detpozn2"> (vektory)</td></tr><tr><td class="detpredm">Chemie</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 2</td><td nowrap class="dettypp">Nejnižší důležitost</td><td nowrap class="detvaha">(váha 2)</td><td nowrap class="detdatum"></td><td class="detpozn2"></td></tr><tr><td class="detpredm">Konverzace v anglickém jazyce</td><td><div class="detznb">4 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">10.12.12</td><td class="detpozn2"> (Listening)</td></tr><tr><td class="detpredm">Tělesná výchova</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">8.11.12</td><td class="detpozn2"> (švihadlo - test)</td></tr><tr><td class="detpredm">Základy společenských věd</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum"></td><td class="detpozn2"> (stát, demokracie)</td></tr><tr><td class="detpredm">Německý jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">2.10.12</td><td class="detpozn2"> (test na slovicka)</td></tr><tr><td class="detpredm">Fyzika</td><td><div class="detznb">1- </div></td><td></td><td class="dettyp"> 3</td><td nowrap class="dettypp">Nízká důležitost</td><td nowrap class="detvaha">(váha 3)</td><td nowrap class="detdatum">19.10.12</td><td class="detpozn2"> (Vnitřní odopr zdroje - příklad)</td></tr><tr><td class="detpredm">Chemie</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 4</td><td nowrap class="dettypp">Nízká důležitost</td><td nowrap class="detvaha">(váha 4)</td><td nowrap class="detdatum"></td><td class="detpozn2"></td></tr><tr><td class="detpredm">Český jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">11.10.12</td><td class="detpozn2"> (Diktát č.1)</td></tr><tr><td class="detpredm">Konverzace v anglickém jazyce</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">10.12.12</td><td class="detpozn2"> (Use of English)</td></tr><tr><td class="detpredm">Matematika</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">13.12.12</td><td class="detpozn2"> (přímky - druhy zápisu)</td></tr><tr><td class="detpredm">Informačně technologický základ</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">13.10.12</td><td class="detpozn2"> (Test - kamery)</td></tr><tr><td class="detpredm">Základy společenských věd</td><td><div class="detznb">3 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">31.10.12</td><td class="detpozn2"> (Občan ve st.)</td></tr><tr><td class="detpredm">Informatika - ekonomika</td><td><div class="detznbnova">1 </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum"></td><td class="detpozn2"> (DP)</td>tr><tr><td class="detpredm">Německý jazyk</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">4.10.12</td><td class="detpozn2"> (test na lekci)</td></tr><tr><td class="detpredm">Tělesná výchova</td><td><div class="detznb">2- </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">8.11.12</td><td class="detpozn2"> (kopaná - hra)</td></tr><tr><td class="detpredm">Biologie</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">23.11.12</td><td class="detpozn2"></td></tr><tr><td class="detpredm">Anglický jazyk</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">30.10.12</td><td class="detpozn2"> (písemka - slovíčka)</td></tr><tr><td class="detpredm">Dějepis</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 9</td><td nowrap class="dettypp">Nejvyšší důležitost</td><td nowrap class="detvaha">(váha 9)</td><td nowrap class="detdatum">7.11.12</td><td class="detpozn2"> (ČSR-20. léta)</td></tr><tr><td class="detpredm"></td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 9</td><td nowrap class="dettypp">Nejvyšší důležitost</td><td nowrap class="detvaha">(váha 9)</td><td nowrap class="detdatum">16.1.13</td><td class="detpozn2"></td></tr><tr><td class="detpredm">Německý jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">18.10.12</td><td class="detpozn2"> (test na slovicka)</td></tr><tr><td class="detpredm">Základy společenských věd</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">19.12.12</td><td class="detpozn2"> (úvod do teorie práva)</td></tr><tr><td class="detpredm">Anglický jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum">20.11.12</td><td class="detpozn2"> (Conditionals - pís.)</td></tr><tr><td class="detpredm">Fyzika</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">9.10.12</td><td class="detpozn2"> (Elektrický proud v kovech)</td></tr><tr><td class="detpredm">Chemie</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 3</td><td nowrap class="dettypp">Nízká důležitost</td><td nowrap class="detvaha">(váha 3)</td><td nowrap class="detdatum"></td><td class="detpozn2"></td></tr><tr><td class="detpredm">Informačně technologický základ</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">30.10.12</td><td class="detpozn2"> (Test - historie počítačů)</td></tr><tr><td class="detpredm">Biologie</td><td><div class="detznb">3 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">3.12.12</td><td class="detpozn2"></td></tr><tr><td class="detpredm"></td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">17.12.12</td><td class="detpozn2"></td></tr><tr><td class="detpredm">Zeměpis</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">8.10.12</td><td class="detpozn2"> (Austrálie, Oceánie)</td></tr><tr><td class="detpredm">Chemie</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum"></td><td class="detpozn2"></td></tr><tr><td class="detpredm">Český jazyk</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">9.11.12</td><td class="detpozn2"> (Zájmena)</td></tr><tr><td class="detpredm">Anglický jazyk</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">20.11.12</td><td class="detpozn2"> (Test Unit 6)</td></tr><tr><td class="detpredm">Fyzika</td><td><div class="detznb">3 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">18.1.13</td><td class="detpozn2"> (Ústní zkouška)</td></tr><tr><td class="detpredm">Tělesná výchova</td><td><div class="detznb">3 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">15.1.13</td><td class="detpozn2"> (shyby-hrazda)</td></tr><tr><td class="detpredm">Informačně technologický základ</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 4</td><td nowrap class="dettypp">Nízká důležitost</td><td nowrap class="detvaha">(váha 4)</td><td nowrap class="detdatum">13.11.12</td><td class="detpozn2"> (Test - DOS)</td></tr><tr><td class="detpredm">Anglický jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">20.11.12</td><td class="detpozn2"> (Test Unit 6 - listening)</td></tr><tr><td class="detpredm">Základy společenských věd</td><td><div class="detznbnova">2- </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">23.1.13</td><td class="detpozn2"> (veřejné právo)</td></tr><tr><td class="detpredm">Německý jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">30.10.12</td><td class="detpozn2"> (test na lekci)</td></tr><tr><td class="detpredm">Fyzika</td><td><div class="detznb">1- </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">6.12.12</td><td class="detpozn2"> (Elektrický proud v látkách)</td></tr><tr><td class="detpredm">Český jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">9.11.12</td><td class="detpozn2"> (Diktát č.2)</td></tr><tr><td class="detpredm">Zeměpis</td><td><div class="detznb">3 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">1.11.12</td><td class="detpozn2"> (polární oblasti)</td></tr><tr><td class="detpredm">Biologie</td><td><div class="detznb">4 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">17.12.12</td><td class="detpozn2"></td></tr><tr><td class="detpredm">Chemie</td><td><div class="detznb">A </div></td><td></td><td class="dettyp"> 5</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 5)</td><td nowrap class="detdatum"></td><td class="detpozn2"></td></tr><tr><td class="detpredm">Informačně technologický základ</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 4</td><td nowrap class="dettypp">Nízká důležitost</td><td nowrap class="detvaha">(váha 4)</td><td nowrap class="detdatum">16.11.12</td><td class="detpozn2"> (Výpisky - vývoj HW)</td></tr><tr><td class="detpredm">Tělesná výchova</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">15.1.13</td><td class="detpozn2"> (šplh-lano)</td></tr><tr><td class="detpredm">Anglický jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">13.12.12</td><td class="detpozn2"> (Esej)</td></tr><tr><td class="detpredm">Český jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 9</td><td nowrap class="dettypp">Nejvyšší důležitost</td><td nowrap class="detvaha">(váha 9)</td><td nowrap class="detdatum">12.11.12</td><td class="detpozn2"> (Moderní umělecké směry)</td></tr><tr><td class="detpredm">Základy společenských věd</td><td><div class="detznbnova">2 </div></td><td></td><td class="dettyp"> 4</td><td nowrap class="dettypp">Nízká důležitost</td><td nowrap class="detvaha">(váha 4)</td><td nowrap class="detdatum">23.1.13</td><td class="detpozn2"> (veřejné právo)</td></tr><tr><td class="detpredm">Biologie</td><td><div class="detznbnova">3 </div></td><td></td><td class="dettyp"> 7</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 7)</td><td nowrap class="detdatum">23.1.13</td><td class="detpozn2"></td></tr><tr><td class="detpredm">Informačně technologický základ</td><td><div class="detznb">1- </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">4.12.12</td><td class="detpozn2"> (Test - vývoj OS)</td></tr><tr><td class="detpredm">Tělesná výchova</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">15.1.13</td><td class="detpozn2"> (kliky-test)</td></tr><tr><td class="detpredm">Fyzika</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">17.1.13</td><td class="detpozn2"> (Magnetické pole)</td></tr><tr><td class="detpredm">Zeměpis</td><td><div class="detznb">3 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">3.12.12</td><td class="detpozn2"> (východní Asie)</td></tr><tr><td class="detpredm">Anglický jazyk</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">13.12.12</td><td class="detpozn2"> (test Unit 7)</td></tr><tr><td class="detpredm">Německý jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">22.11.12</td><td class="detpozn2"> (test na slovicka)</td></tr><tr><td class="detpredm">Zeměpis</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">17.12.12</td><td class="detpozn2"> (jihovýchodní Asie)</td></tr><tr><td class="detpredm">Tělesná výchova</td><td><div class="detznb">1- </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">15.1.13</td><td class="detpozn2"> (gymnastika-prostná)</td></tr><tr><td class="detpredm">Informačně technologický základ</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">15.1.13</td><td class="detpozn2"> (Test - číselné soustavy)</td></tr><tr><td class="detpredm">Český jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">25.11.12</td><td class="detpozn2"> (Zájmena)</td></tr><tr><td class="detpredm">Německý jazyk</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">27.11.12</td><td class="detpozn2"> (test na lekci)</td></tr><tr><td class="detpredm">Tělesná výchova</td><td><div class="detznb">2 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">15.1.13</td><td class="detpozn2"> (gymnastika-prostná k. vzad)</td></tr><tr><td class="detpredm">Anglický jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 4</td><td nowrap class="dettypp">Nízká důležitost</td><td nowrap class="detvaha">(váha 4)</td><td nowrap class="detdatum">10.1.13</td><td class="detpozn2"> (Slovíčka 8. lekce)</td></tr><tr><td class="detpredm">Zeměpis</td><td><div class="detznbnova">3 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">14.1.13</td><td class="detpozn2"> (jižní Asie)</td></tr><tr><td class="detpredm">Matematika</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> Atd><td nowrap class="dettypp">Nejvyšší důležitost</td><td nowrap class="detvaha">(váha 10)</td><td nowrap class="detdatum">8.11.12</td><td class="detpozn2"> (rovnice s parametrem , vektory)</td></tr><tr><td class="detpredm">Německý jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum">19.12.12</td><td class="detpozn2"> (test na slovicka)</td></tr><tr><td class="detpredm">Český jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">25.11.12</td><td class="detpozn2"> (Slovesa)</td></tr><tr><td class="detpredm">Matematika</td><td><div class="detznbnova">2 </div></td><td></td><td class="dettyp"> A</td><td nowrap class="dettypp">Nejvyšší důležitost</td><td nowrap class="detvaha">(váha 10)</td><td nowrap class="detdatum">24.1.13</td><td class="detpozn2"> (lineární útvary v analytické geometrii)</td></tr><tr><td class="detpredm">Český jazyk</td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">3.1.13</td><td class="detpozn2"> (Slohová práce)</td></tr><tr><td class="detpredm"></td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 8</td><td nowrap class="dettypp">Vysoká důležitost</td><td nowrap class="detvaha">(váha 8)</td><td nowrap class="detdatum">14.1.13</td><td class="detpozn2"> (Diktát č.3)</td></tr><tr><td class="detpredm"></td><td><div class="detznb">1 </div></td><td></td><td class="dettyp"> 9</td><td nowrap class="dettypp">Nejvyšší důležitost</td><td nowrap class="detvaha">(váha 9)</td><td nowrap class="detdatum">21.1.13</td><td class="detpozn2"> (Literatura - písemné opakování)</td></tr><tr><td class="detpredm">Seminář a cvičení z matematiky</td><td><div class="detznbnova">1 </div></td><td></td><td class="dettyp"> 6</td><td nowrap class="dettypp">Střední důležitost</td><td nowrap class="detvaha">(váha 6)</td><td nowrap class="detdatum"></td><td class="detpozn2"></td></tr></tbody></table><br>
+                   <div class="detzpet">
+
+                    </div>
+
+                </td><td class="dxrpRE" style="background-color:WhiteSmoke;border-right-color:#8B8B8B;border-right-style:Solid;border-right-width:1px;"><div style="height:1px;width:1px;overflow:hidden;">
+
+                    </div></td>
+                </tr><tr>
+                    <td style="width:5px;height:5px;"><img class="dxrpCI" src="App_Themes/tyrkysTheme/BottomLeftCorner.png" alt="" style="height:5px;width:5px;" /></td><td class="dxrpBE" style="background-color:WhiteSmoke;border-bottom-color:#8B8B8B;border-bottom-style:Solid;border-bottom-width:1px;"><div style="height:1px;width:1px;overflow:hidden;">
+
+                    </div></td><td style="width:5px;height:5px;"><img class="dxrpCI" src="App_Themes/tyrkysTheme/BottomRightCorner.png" alt="" style="height:5px;width:5px;" /></td>
+                </tr>
+            </table></td>
+        </tr>
+    </table>
+
+
+
+<!-- obout Flyout v.2.0.5.0  http://www.obout.com  -->
+
+<div id="cphmain_Flyout2_content" style="display:none;filter:alpha(opacity=0);-moz-opacity:0;opacity:0;">
+                    <div class="flyplan">
+                        <span id="cphmain_Flyout2_Labelorder" class="fltext">seřadit: </span>
+                        <select name="ctl00$cphmain$Flyout2$orderlist" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$cphmain$Flyout2$orderlist\&#39;,\&#39;\&#39;)&#39;, 0)" id="cphmain_Flyout2_orderlist" class="rmlist">
+        <option selected="selected" value="0">standardně</option>
+        <option value="1">podle data</option>
+        <option value="2">podle v&#225;hy</option>
+        <option value="3">předmět + datum</option>
+        <option value="4">předmět + v&#225;ha</option>
+
+    </select>
+
+
+
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+
+                    </div>
+                </div><div id="cphmain_Flyout2_contentbox"></div>
+
+
+<!-- obout Flyout v.2.0.5.0  http://www.obout.com  -->
+
+<div id="cphmain_Flyout3_content" style="display:none;filter:alpha(opacity=0);-moz-opacity:0;opacity:0;">
+                    <div class="flyplan">
+                        <div>
+                            <table class="dodatable"><tbody><tr><td colspan=2 class="dodanadpis">Vysvětlivky</td></tr><tr><td class="doda">?</td><td class="dodapopis">plánovaná klasifikace         </td></tr><tr><td class="doda">A</td><td class="dodapopis">nemoc-absence                 </td></tr><tr><td class="doda">N</td><td class="dodapopis">nepsal-neúčastnil se          </td></tr><tr><td class="doda">U</td><td class="dodapopis">uvolněn                       </td></tr><tr><td class="doda">X</td><td class="dodapopis">nehodnocen nebo bez zlepšení  </td></tr></tbody></table>
+                        </div>
+                    </div>
+                </div><div id="cphmain_Flyout3_contentbox"></div>
+            </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>
+
+<script type="text/javascript" src="/BakaWEB/WebResource.axd?d=TLJC-cq4k7Zt-peD8-oLUhPvervP-gzf3IsG3Qcgcs77n_KbPeanH570AQ0rROSYN52lt1yz14eagiy0tfdwVpHt49abIs3CVxyPUaTBKdEfgMfUucJbbRCWfHBw06F_vpd1-B1qAhCqk4tOjtSZMrnc1um_AUrCyz0EerbGJdI1&amp;t=634678798280000000" ></script><script type='text/javascript' >var cphmain_Flyout2panelpmprub;function initcphmain_Flyout2panelpmprub(attempt){try{cphmain_Flyout2panelpmprub=new Flyout2('cphmain_Flyout2panelpmprub','cphmain_panelpmprub','','cphmain_Flyout2_content','BOTTOM_CENTER','RIGHT','ONMOUSEOVER','ONMOUSEOUT',200,200,200,10,0,0,100,0,true,true,false,false,'#DDDDDD',25);if (cphmain_Flyout2panelpmprub.removeOCB!=null){cphmain_Flyout2panelpmprub.registerOpenEffect(new FlyingEffect('BOTTOM_LEFT'));cphmain_Flyout2panelpmprub.registerCloseEffect(new FlyingEffect('BOTTOM_LEFT'));}}catch(e){alert("Failed to initialize [Flyout2] \n.Error:"+ e+ "\nPlease contact support@obout.com for support.");}}oldcphmain_Flyout2panelpmprubload = window.onload;window.onload=function(evt){if (oldcphmain_Flyout2panelpmprubload!=null) oldcphmain_Flyout2panelpmprubload();initcphmain_Flyout2panelpmprub(0);};</script> <script type='text/javascript' >var cphmain_Flyout3imageprubinfo;function initcphmain_Flyout3imageprubinfo(attempt){try{cphmain_Flyout3imageprubinfo=new Flyout2('cphmain_Flyout3imageprubinfo','cphmain_imageprubinfo','','cphmain_Flyout3_content','BOTTOM_CENTER','RIGHT','ONMOUSEOVER','ONMOUSEOUT',200,200,200,10,0,0,100,0,true,true,false,false,'#DDDDDD',25);if (cphmain_Flyout3imageprubinfo.removeOCB!=null){cphmain_Flyout3imageprubinfo.registerOpenEffect(new FlyingEffect('BOTTOM_LEFT'));cphmain_Flyout3imageprubinfo.registerCloseEffect(new FlyingEffect('BOTTOM_LEFT'));}}catch(e){alert("Failed to initialize [Flyout3] \n.Error:"+ e+ "\nPlease contact support@obout.com for support.");}}oldcphmain_Flyout3imageprubinfoload = window.onload;window.onload=function(evt){if (oldcphmain_Flyout3imageprubinfoload!=null) oldcphmain_Flyout3imageprubinfoload();initcphmain_Flyout3imageprubinfo(0);};</script> </form>
+
+</body>
+</html>

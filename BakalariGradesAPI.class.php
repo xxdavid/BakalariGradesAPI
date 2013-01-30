@@ -1,4 +1,6 @@
 <?php
+require('simple_html_dom.php');
+
 class BakalariGradesAPI {
 
   private $html;
@@ -192,45 +194,43 @@ class BakalariGradesAPI {
     return $grades;
   }
 
-
-  private function parseGradesDetails($html){
-    $grades = array();
-
-    $i = 0;
-    $subjectPositionBackup = 0;
-    $subjectStart = '<td class="detpredm">';
-    while (strpos ($html, $subjectStart, $subjectPositionBackup) != false) {
-      $subjectStart = '<td class="detpredm">';
-      $subjectPosition1 = strpos ($html, $subjectStart, $subjectPositionBackup);
-      $subjectPosition2 = strpos ($html, '</td>', $subjectPosition1);
-      $subject = substr($html, $subjectPosition1 + strlen($subjectStart), $subjectPosition2 - $subjectPosition1 - strlen($subjectStart));
-
-      $gradeStart = '<div class="detzn">';
-      $gradePosition1 = strpos ($html, $gradeStart, $subjectPositionBackup);
-      $gradePosition2 = strpos ($html, '</div>', $gradePosition1);
-      $grade = substr($html, $gradePosition1 + strlen($gradeStart), $gradePosition2 - $gradePosition1 - strlen($gradeStart) -1);
-
-      $descriptionStart = '<td class="detcaption">';
-      $descriptionPosition1 = strpos ($html, $descriptionStart, $subjectPositionBackup);
-      $descriptionPosition2 = strpos ($html, '</td>', $descriptionPosition1);
-      $description = substr($html, $descriptionPosition1 + strlen($descriptionStart) +1, $descriptionPosition2 - $descriptionPosition1 - strlen($descriptionStart) -1);
-
-      $dateStart = '<td class="detdatum">';
-      $datePosition1 = strpos ($html, $dateStart, $subjectPositionBackup);
-      $datePosition2 = strpos ($html, '</td>', $datePosition1);
-      $date = substr($html, $datePosition1 + strlen($dateStart), $datePosition2 - $datePosition1 - strlen($dateStart));
-
-      $gradeArray = array();
-      $gradeArray['grade'] = $grade;
-      $gradeArray['description'] = $description;
-      $gradeArray['date'] = $date;
-      $grades[$subject] = isset($grades[$subject]) ? $grades[$subject] : array();
-      array_push($grades[$subject], $gradeArray);
-
-      $subjectPositionBackup = $subjectPosition1 + 100;
-      $i++;
+  private function orderBySubjects($grades) {
+    $subjects = array();
+    foreach ($grades as $grade) {
+      $subject = $grade['subject'];
+      $subjects[$subject] = isset($subjects[$subject]) ? $subjects[$subject] : array();
+      $subjects[$subject][] = $grade;
     }
-    return $grades;
+    return $subjects;
+  }
+
+  private function parseGradesDetails($source){
+    $grades = array();
+    $html = str_get_html($source);
+    $lines = $html->find('.dettable tbody tr');
+
+    foreach ($lines as $line) {
+      $grade = array();
+
+      $el_subject = $line->find('.detpredm', 0);
+      $grade['subject'] = $el_subject->plaintext;
+
+      $el_grade = $line->find('.detznb', 0);
+      if (!$el_grade) {
+        $el_grade = $line->find('.detznbnova', 0);
+      }
+      $grade['grade'] = $el_grade ? $el_grade->plaintext : '';
+
+      $el_date = $line->find('.detdatum', 0);
+      $grade['date'] = $el_date ? $el_date->plaintext : '';
+
+      $el_description = $line->find('.detpozn2', 0);
+      $grade['description'] = $el_description ? $el_description->plaintext : '';
+
+      $grades[] = $grade;
+    }
+
+    return $this->orderBySubjects($grades);
   }
 
   public function getGradesDetails() {
