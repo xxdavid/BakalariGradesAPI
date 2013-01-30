@@ -14,11 +14,15 @@ $bakalariPassword = "VaseHeslo"; //Heslo na Bakalářích
 $bakalariHost = "AdresaBakalaru"; //Základní adresa Bakalářů (bez konkretního souboru); např. http://www.zssirotkova.cz:81 nebo http://bakalari.gfpvm.cz/bakaweb nebo http://bakalari.gfxs.cz ; POZOR: adresa musí být bez lomítka na konci
 $bakalariCookie = "cookies.txt"; //soubor s cookies
 
+// Moje přihlašovací údaje pro účely testování
+@require('config.php');
+
 require("BakalariGradesAPI.class.php");
 $znamky = new BakalariGradesAPI($bakalariUsername,$bakalariPassword,$bakalariHost,$bakalariCookie);
 $poleZnamek = $znamky->getGradesDetails();
 
-echo ("Tak třeba známky z Češtiny");
+var_dump($poleZnamek);
+
 echo "<table border=1>";
 echo "<tr><th>Známka</th><th>Popis</th><th>Datum</th></tr>";
 for ($i = 0; $i < count($poleZnamek['Český jazyk']); $i++){
