@@ -1,4 +1,6 @@
 <?php
+require('simple_html_dom.php');
+
 class BakalariGradesAPI {
 
   private $html;
@@ -95,7 +97,7 @@ class BakalariGradesAPI {
     curl_close($ch3);
     return $html;
   }
-          
+
   private function fetchSubject($subjectID, $viewstate, $eventvalidation) {
     //Subject page
     $ch4 = curl_init();
@@ -104,7 +106,7 @@ class BakalariGradesAPI {
     curl_setopt($ch4, CURLOPT_URL,$this->host."/prehled.aspx?s=2");
     curl_setopt($ch4, CURLOPT_POST, 1);
     $params = array();
-    $params['__EVENTTARGET'] = $subjectID; 
+    $params['__EVENTTARGET'] = $subjectID;
     $params['__EVENTARGUMENT'] = '';
     $params['__LASTFOCUS'] = '';
     $params['__VIEWSTATE'] = $viewstate;
@@ -122,15 +124,16 @@ class BakalariGradesAPI {
     $html = curl_exec($ch4);
     curl_close($ch4);
     return $html;
-  }                         
-    private function fetchDetails($viewstate, $eventvalidation) {
+  }
+
+  private function fetchDetails($viewstate, $eventvalidation) {
     //Subject page
     $ch4 = curl_init();
     curl_setopt($ch4, CURLOPT_COOKIEFILE, $this->cookie);
     curl_setopt($ch4, CURLOPT_URL,$this->host."/prehled.aspx?s=2");
     curl_setopt($ch4, CURLOPT_POST, 1);
     $params = array();
-    $params['__EVENTTARGET'] = 'ctl00$cphmain$Checkdetail'; 
+    $params['__EVENTTARGET'] = 'ctl00$cphmain$Checkdetail';
     $params['__EVENTARGUMENT'] = '';
     $params['__LASTFOCUS'] = '';
     $params['__VIEWSTATE'] = $viewstate;
@@ -146,14 +149,14 @@ class BakalariGradesAPI {
     //echo htmlspecialchars($html);
     return $html;
   }
-               
+
   private function parseGrades($html) {
     $grades = array(array());
     $i = 0;
 
     // TODO: parsing refactoring
     $gradeNumberPostion3 = null;
-    
+
     $gradeStart = '<div class="detznb">'; // Bakalari libver 31.8.2012
     $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
       if (!$gradeNumberPostion1) {
@@ -162,7 +165,7 @@ class BakalariGradesAPI {
       }
 
     while (strpos ($html, $gradeStart, $gradeNumberPostion3) != false) {
-    
+
       $gradeStart = '<div class="detznb">'; // Bakalari libver 31.8.2012
       $gradeNumberPostion1 = strpos ($html, $gradeStart, $gradeNumberPostion3);
       if (!$gradeNumberPostion1) {
@@ -179,56 +182,61 @@ class BakalariGradesAPI {
       }
       $gradeDescriptionPosition2 = strpos ($html, '</td>', $gradeDescriptionPosition1);
       $grades[$i][1] = htmlspecialchars(substr($html, $gradeDescriptionPosition1 + strlen($descriptionStart), $gradeDescriptionPosition2 - $gradeDescriptionPosition1 - strlen($descriptionStart)));
-      
+
       $dateStart = '<td nowrap class="detdatum">';
       $gradeDatePosition1 = strpos ($html, $dateStart, $gradeNumberPostion3);
       $gradeDatePosition2 = strpos ($html, '</td>', $gradeDatePosition1);
-      $grades[$i][2] = substr($html, $gradeDatePosition1 + strlen($dateStart), $gradeDatePosition2 - $gradeDatePosition1 - strlen($dateStart)); 
-      
+      $grades[$i][2] = substr($html, $gradeDatePosition1 + strlen($dateStart), $gradeDatePosition2 - $gradeDatePosition1 - strlen($dateStart));
+
       $gradeNumberPostion3 = $gradeNumberPostion1 + 35;
       $i++;
      }
     return $grades;
   }
 
-  
-  private function parseGradesDetails($html){
-  $grades = array( array( array(),),);
-  
-  $subjectStart = '<td class="detpredm">';
-  while (strpos ($html, $subjectStart, $subjectPositionBackup) != false) {
-     $subjectStart = '<td class="detpredm">';
-     $subjectPosition1 = strpos ($html, $subjectStart, $subjectPositionBackup);
-     $subjectPosition2 = strpos ($html, '</td>', $subjectPosition1);
-     $subject = substr($html, $subjectPosition1 + strlen($subjectStart), $subjectPosition2 - $subjectPosition1 - strlen($subjectStart));
-     
-     $gradeStart = '<div class="detzn">';
-     $gradePosition1 = strpos ($html, $gradeStart, $subjectPositionBackup);
-     $gradePosition2 = strpos ($html, '</div>', $gradePosition1);
-     $grade = substr($html, $gradePosition1 + strlen($gradeStart), $gradePosition2 - $gradePosition1 - strlen($gradeStart) -1);        
-     
-     $descriptionStart = '<td class="detcaption">';
-     $descriptionPosition1 = strpos ($html, $descriptionStart, $subjectPositionBackup);
-     $descriptionPosition2 = strpos ($html, '</td>', $descriptionPosition1);
-     $description = substr($html, $descriptionPosition1 + strlen($descriptionStart) +1, $descriptionPosition2 - $descriptionPosition1 - strlen($descriptionStart) -1); 
-  
-     $dateStart = '<td class="detdatum">';
-     $datePosition1 = strpos ($html, $dateStart, $subjectPositionBackup);
-     $datePosition2 = strpos ($html, '</td>', $datePosition1);
-     $date = substr($html, $datePosition1 + strlen($dateStart), $datePosition2 - $datePosition1 - strlen($dateStart)); 
-     
-     
-     $grades[$subject][count($grades[$subject])+1]['grade'] = $grade;
-     $grades[$subject][count($grades[$subject])]['description'] = $description;
-     $grades[$subject][count($grades[$subject])]['date'] = $date;
-     
-      $subjectPositionBackup = $subjectPosition1 + 100;
-      $i++; 
-     }
-     return $grades;    
-     
+  private function orderBySubjects($grades) {
+    $subjects = array();
+    foreach ($grades as $grade) {
+      $subject = $grade['subject'];
+      $subjects[$subject] = isset($subjects[$subject]) ? $subjects[$subject] : array();
+      $subjects[$subject][] = $grade;
+    }
+    return $subjects;
   }
-  
+
+  private function parseGradesDetails($source){
+    $grades = array();
+    $html = str_get_html($source);
+    $lines = $html->find('.dettable tbody tr');
+
+    foreach ($lines as $line) {
+      $grade = array();
+
+      $el_subject = $line->find('.detpredm', 0);
+      $grade['subject'] = $el_subject->plaintext;
+      if (!$grade['subject']) {
+        $last_grade = end($grades);
+        $grade['subject'] = $last_grade['subject'];
+      }
+
+      $el_grade = $line->find('.detznb', 0);
+      $el_grade = $el_grade ? $el_grade : $line->find('.detznbnova', 0);
+      $el_grade = $el_grade ? $el_grade : $line->find('.detzn', 0);
+      $grade['grade'] = $el_grade ? $el_grade->plaintext : '';
+
+      $el_date = $line->find('.detdatum', 0);
+      $grade['date'] = $el_date ? $el_date->plaintext : '';
+
+      $el_description = $line->find('.detpozn2', 0);
+      $el_description = $el_description ? $el_description : $line->find('.detcaption', 0);
+      $grade['description'] = $el_description ? $el_description->plaintext : '';
+
+      $grades[] = $grade;
+    }
+
+    return $this->orderBySubjects($grades);
+  }
+
   public function getGradesDetails() {
     // Viewstate
     $viewstate = $this->fetchViewstate();
@@ -244,13 +252,12 @@ class BakalariGradesAPI {
     $eventvalidation = $this->parseEventValidation($html);
 
     // Subject page
-    // TODO: Returns date only after browser page refresh, when cookie file is created, why?
-        $html = $this->fetchDetails($viewstate, $eventvalidation);
+    $html = $this->fetchDetails($viewstate, $eventvalidation);
 
     // Parse grades
     return $this->parseGradesDetails($html);
   }
-                      
+
   public function getGrades($subjectID) {
     // Viewstate
     $viewstate = $this->fetchViewstate();
