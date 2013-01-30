@@ -220,15 +220,15 @@ class BakalariGradesAPI {
       }
 
       $el_grade = $line->find('.detznb', 0);
-      if (!$el_grade) {
-        $el_grade = $line->find('.detznbnova', 0);
-      }
+      $el_grade = $el_grade ? $el_grade : $line->find('.detznbnova', 0);
+      $el_grade = $el_grade ? $el_grade : $line->find('.detzn', 0);
       $grade['grade'] = $el_grade ? $el_grade->plaintext : '';
 
       $el_date = $line->find('.detdatum', 0);
       $grade['date'] = $el_date ? $el_date->plaintext : '';
 
       $el_description = $line->find('.detpozn2', 0);
+      $el_description = $el_description ? $el_description : $line->find('.detcaption', 0);
       $grade['description'] = $el_description ? $el_description->plaintext : '';
 
       $grades[] = $grade;
@@ -252,8 +252,7 @@ class BakalariGradesAPI {
     $eventvalidation = $this->parseEventValidation($html);
 
     // Subject page
-    // TODO: Returns date only after browser page refresh, when cookie file is created, why?
-        $html = $this->fetchDetails($viewstate, $eventvalidation);
+    $html = $this->fetchDetails($viewstate, $eventvalidation);
 
     // Parse grades
     return $this->parseGradesDetails($html);
