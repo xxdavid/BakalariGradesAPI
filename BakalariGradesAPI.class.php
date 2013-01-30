@@ -214,6 +214,10 @@ class BakalariGradesAPI {
 
       $el_subject = $line->find('.detpredm', 0);
       $grade['subject'] = $el_subject->plaintext;
+      if (!$grade['subject']) {
+        $last_grade = end($grades);
+        $grade['subject'] = $last_grade['subject'];
+      }
 
       $el_grade = $line->find('.detznb', 0);
       if (!$el_grade) {
