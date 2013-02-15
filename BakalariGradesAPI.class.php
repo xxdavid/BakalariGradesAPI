@@ -230,6 +230,8 @@ class BakalariGradesAPI {
       $el_description = $line->find('.detcaption', 0);
       $el_description = $el_description ? $el_description : $line->find('.detpozn2', 0);
       $grade['description'] = trim($el_description ? $el_description->plaintext : '');
+      // Remove brackets
+      $grade['description'] = preg_replace('/\((.+)\)/', '$1', $grade['description']);
 
       $grades[] = $grade;
     }
@@ -237,7 +239,7 @@ class BakalariGradesAPI {
     return $this->orderBySubjects($grades);
   }
 
-  public function getGradesDetails() {  
+  public function getGradesDetails() {
     // Viewstate
     $viewstate = $this->fetchViewstate();
 
@@ -252,8 +254,8 @@ class BakalariGradesAPI {
     $eventvalidation = $this->parseEventValidation($html);
 
     // Subject page
-    $html = $this->fetchDetails($viewstate, $eventvalidation);    
-    
+    $html = $this->fetchDetails($viewstate, $eventvalidation);
+
     // Parse grades
     return $this->parseGradesDetails($html);
   }
