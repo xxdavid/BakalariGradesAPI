@@ -138,6 +138,7 @@ class BakalariGradesAPI {
     $params['__LASTFOCUS'] = '';
     $params['__VIEWSTATE'] = $viewstate;
     $params['__EVENTVALIDATION'] = $eventvalidation;
+    $params['ctl00$cphmain$Flyout2$Checktypy'] = 'on';
     $params['ctl00$cphmain$Flyout2$Checkdatumy'] = 'on';  // must be sent - libver 17.5.2012
     $params['ctl00$cphmain$Checkdetail'] = 'on';
     $implodedParams = $this->implodeParams($params);
@@ -223,6 +224,9 @@ class BakalariGradesAPI {
       $el_grade = $el_grade ? $el_grade : $line->find('.detznbnova', 0);
       $el_grade = $el_grade ? $el_grade : $line->find('.detzn', 0);
       $grade['grade'] = trim ($el_grade ? $el_grade->plaintext : '');
+
+      $el_weight = $line->find('.dettyp', 0);
+      $grade['weight'] = $el_weight ? $el_weight->plaintext : '';
 
       $el_date = $line->find('.detdatum', 0);
       $grade['date'] = $el_date ? $el_date->plaintext : '';
