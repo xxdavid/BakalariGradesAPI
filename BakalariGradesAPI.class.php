@@ -228,6 +228,8 @@ class BakalariGradesAPI {
       $el_grade = $el_grade ? $el_grade : $line->find('.detznbnova', 0);
       $el_grade = $el_grade ? $el_grade : $line->find('.detzn', 0);
       $grade['grade'] = trim ($el_grade ? $el_grade->plaintext : '');
+      // Remove suspicious date exclamation mark
+      $grade['grade'] = str_replace('!', '', $grade['grade']);
       // Do not return 'absent' grades
       if ($grade['grade'] == 'A') {
         continue;
@@ -244,9 +246,12 @@ class BakalariGradesAPI {
 
       $el_description = $line->find('.detcaption', 0);
       $el_description = $el_description ? $el_description : $line->find('.detpozn2', 0);
-      $grade['description'] = trim($el_description ? $el_description->plaintext : '');
+      $grade['description'] = $el_description ? $el_description->plaintext : '';
+      $grade['description'] = trim($grade['description']);
       // Remove brackets
       $grade['description'] = preg_replace('/\((.+)\)/', '$1', $grade['description']);
+      $grade['description'] = strip_tags($grade['description']);
+      $grade['description'] = str_replace('... Podezřelé datum!', '', $grade['description']);
 
       $grades[] = $grade;
     }
