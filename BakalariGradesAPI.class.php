@@ -229,8 +229,10 @@ class BakalariGradesAPI {
       $el_grade = $el_grade ? $el_grade : $line->find('.detzn', 0);
       $grade['grade'] = trim ($el_grade ? $el_grade->plaintext : '');
 
-      $el_weight = $line->find('.dettyp', 0);
+      $el_weight = $line->find('.detvaha', 0);
       $grade['weight'] = $el_weight ? $el_weight->plaintext : '';
+      preg_match('/([0-9]+)/', $grade['weight'], $weight_parts);
+      $grade['weight'] = reset($weight_parts);
 
       $el_date = $line->find('.detdatum', 0);
       $grade['date'] = $el_date ? $el_date->plaintext : '';
