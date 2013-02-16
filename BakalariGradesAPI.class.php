@@ -234,6 +234,7 @@ class BakalariGradesAPI {
 
       $el_date = $line->find('.detdatum', 0);
       $grade['date'] = $el_date ? $el_date->plaintext : '';
+      $grade['date'] = date('Y-m-d', strtotime($grade['date']));
 
       $el_description = $line->find('.detcaption', 0);
       $el_description = $el_description ? $el_description : $line->find('.detpozn2', 0);
