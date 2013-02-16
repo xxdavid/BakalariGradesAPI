@@ -208,6 +208,10 @@ class BakalariGradesAPI {
   private function parseGradesDetails($source){
     $grades = array();
     $html = str_get_html($source);
+    if (!$html) {
+      return;
+    }
+
     $lines = $html->find('.dettable tbody tr');
 
     foreach ($lines as $line) {
