@@ -56,6 +56,7 @@ class BakalariGradesAPI {
     curl_setopt($ch1, CURLOPT_URL,$this->host."/login.aspx");
     curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch1, CURLOPT_HEADER, true);
+    curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
     $html = curl_exec ($ch1);
     curl_close($ch1);
     $viewstate = $this->parseViewstate($html);
@@ -83,6 +84,7 @@ class BakalariGradesAPI {
     curl_setopt($ch2, CURLOPT_POSTFIELDS, $implodedParams);
     curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch2, CURLOPT_HEADER, true);
+    curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
     $loginHtml = curl_exec($ch2);
     curl_close($ch2);
   }
@@ -120,6 +122,7 @@ class BakalariGradesAPI {
     $implodedParams = $this->implodeParams($params);
     curl_setopt($ch4, CURLOPT_POSTFIELDS, $implodedParams);
     curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch4, CURLOPT_SSL_VERIFYPEER, false);
     //curl_setopt($ch4, CURLOPT_HEADER, true);
     $html = curl_exec($ch4);
     curl_close($ch4);
@@ -144,6 +147,7 @@ class BakalariGradesAPI {
     $implodedParams = $this->implodeParams($params);
     curl_setopt($ch4, CURLOPT_POSTFIELDS, $implodedParams);
     curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch4, CURLOPT_SSL_VERIFYPEER, false);
     //curl_setopt($ch4, CURLOPT_HEADER, true);
     $html = curl_exec($ch4);
     curl_close($ch4);
