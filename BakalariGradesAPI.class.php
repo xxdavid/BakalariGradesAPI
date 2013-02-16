@@ -95,6 +95,7 @@ class BakalariGradesAPI {
     //curl_setopt($ch3, CURLOPT_COOKIEJAR, $this->cookie);
     curl_setopt($ch3, CURLOPT_COOKIEFILE, $this->cookie);
     curl_setopt($ch3, CURLOPT_URL,$this->host."/prehled.aspx?s=2");
+    curl_setopt($ch3, CURLOPT_SSL_VERIFYPEER, false);
     $html = curl_exec($ch3);
     curl_close($ch3);
     return $html;
