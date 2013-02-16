@@ -228,6 +228,10 @@ class BakalariGradesAPI {
       $el_grade = $el_grade ? $el_grade : $line->find('.detznbnova', 0);
       $el_grade = $el_grade ? $el_grade : $line->find('.detzn', 0);
       $grade['grade'] = trim ($el_grade ? $el_grade->plaintext : '');
+      // Do not return 'absent' grades
+      if ($grade['grade'] == 'A') {
+        continue;
+      }
 
       $el_weight = $line->find('.detvaha', 0);
       $grade['weight'] = $el_weight ? $el_weight->plaintext : '';
