@@ -205,7 +205,7 @@ class BakalariGradesAPI {
     return $subjects;
   }
 
-  private function parseGradesDetails($source){
+  protected function parseGradesDetails($source){
     $grades = array();
     $html = str_get_html($source);
     if (!$html) {
