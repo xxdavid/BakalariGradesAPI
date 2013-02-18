@@ -130,7 +130,7 @@ class BakalariGradesAPI {
     return $html;
   }
 
-  private function fetchDetails($viewstate, $eventvalidation) {
+  private function fetchDetails($viewstate, $eventvalidation, $weightAvailable) {
     //Subject page
     $ch4 = curl_init();
     curl_setopt($ch4, CURLOPT_COOKIEFILE, $this->cookie);
@@ -142,7 +142,9 @@ class BakalariGradesAPI {
     $params['__LASTFOCUS'] = '';
     $params['__VIEWSTATE'] = $viewstate;
     $params['__EVENTVALIDATION'] = $eventvalidation;
-    $params['ctl00$cphmain$Flyout2$Checktypy'] = 'on';
+    if ($weightAvailable) {
+      $params['ctl00$cphmain$Flyout2$Checktypy'] = 'on';
+    }
     $params['ctl00$cphmain$Flyout2$Checkdatumy'] = 'on';  // must be sent - libver 17.5.2012
     $params['ctl00$cphmain$Checkdetail'] = 'on';
     $implodedParams = $this->implodeParams($params);
@@ -264,6 +266,12 @@ class BakalariGradesAPI {
     return $this->orderBySubjects($grades);
   }
 
+  private function isWeightAvailable($source) {
+    $html = str_get_html($source);
+    $found = $html->find('#cphmain_Flyout2_Checktypy', 0);
+    return $found != null;
+  }
+
   public function getGradesDetails() {
     // Viewstate
     $viewstate = $this->fetchViewstate();
@@ -275,11 +283,15 @@ class BakalariGradesAPI {
     // TODO: Does not return grades at first call, why?
     $html = $this->fetchGrades();
     $html = $this->fetchGrades();   // not need for libver 17.5.2012
+
     $viewstate = $this->parseViewstate($html);
     $eventvalidation = $this->parseEventValidation($html);
 
-    // Subject page
-    $html = $this->fetchDetails($viewstate, $eventvalidation);
+    // Check whether weight is available
+    $weightAvailable = $this->isWeightAvailable($html);
+
+    // Details
+    $html = $this->fetchDetails($viewstate, $eventvalidation, $weightAvailable);
 
     // Parse grades
     return $this->parseGradesDetails($html);
@@ -296,6 +308,7 @@ class BakalariGradesAPI {
     // TODO: Does not return grades at first call, why?
     $html = $this->fetchGrades();
     $html = $this->fetchGrades();   // not need for libver 17.5.2012
+
     $viewstate = $this->parseViewstate($html);
     $eventvalidation = $this->parseEventValidation($html);
 
