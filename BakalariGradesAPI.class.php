@@ -56,6 +56,7 @@ class BakalariGradesAPI {
     curl_setopt($ch1, CURLOPT_URL,$this->host."/login.aspx");
     curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch1, CURLOPT_HEADER, true);
+    curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
     $html = curl_exec ($ch1);
     curl_close($ch1);
     $viewstate = $this->parseViewstate($html);
@@ -83,6 +84,7 @@ class BakalariGradesAPI {
     curl_setopt($ch2, CURLOPT_POSTFIELDS, $implodedParams);
     curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch2, CURLOPT_HEADER, true);
+    curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
     $loginHtml = curl_exec($ch2);
     curl_close($ch2);
   }
@@ -93,6 +95,7 @@ class BakalariGradesAPI {
     //curl_setopt($ch3, CURLOPT_COOKIEJAR, $this->cookie);
     curl_setopt($ch3, CURLOPT_COOKIEFILE, $this->cookie);
     curl_setopt($ch3, CURLOPT_URL,$this->host."/prehled.aspx?s=2");
+    curl_setopt($ch3, CURLOPT_SSL_VERIFYPEER, false);
     $html = curl_exec($ch3);
     curl_close($ch3);
     return $html;
@@ -120,6 +123,7 @@ class BakalariGradesAPI {
     $implodedParams = $this->implodeParams($params);
     curl_setopt($ch4, CURLOPT_POSTFIELDS, $implodedParams);
     curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch4, CURLOPT_SSL_VERIFYPEER, false);
     //curl_setopt($ch4, CURLOPT_HEADER, true);
     $html = curl_exec($ch4);
     curl_close($ch4);
@@ -138,11 +142,13 @@ class BakalariGradesAPI {
     $params['__LASTFOCUS'] = '';
     $params['__VIEWSTATE'] = $viewstate;
     $params['__EVENTVALIDATION'] = $eventvalidation;
+    $params['ctl00$cphmain$Flyout2$Checktypy'] = 'on';
     $params['ctl00$cphmain$Flyout2$Checkdatumy'] = 'on';  // must be sent - libver 17.5.2012
     $params['ctl00$cphmain$Checkdetail'] = 'on';
     $implodedParams = $this->implodeParams($params);
     curl_setopt($ch4, CURLOPT_POSTFIELDS, $implodedParams);
     curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch4, CURLOPT_SSL_VERIFYPEER, false);
     //curl_setopt($ch4, CURLOPT_HEADER, true);
     $html = curl_exec($ch4);
     curl_close($ch4);
@@ -204,9 +210,13 @@ class BakalariGradesAPI {
     return $subjects;
   }
 
-  private function parseGradesDetails($source){
+  protected function parseGradesDetails($source){
     $grades = array();
     $html = str_get_html($source);
+    if (!$html) {
+      return;
+    }
+
     $lines = $html->find('.dettable tbody tr');
 
     foreach ($lines as $line) {
@@ -223,13 +233,30 @@ class BakalariGradesAPI {
       $el_grade = $el_grade ? $el_grade : $line->find('.detznbnova', 0);
       $el_grade = $el_grade ? $el_grade : $line->find('.detzn', 0);
       $grade['grade'] = trim ($el_grade ? $el_grade->plaintext : '');
+      // Remove suspicious date exclamation mark
+      $grade['grade'] = str_replace('!', '', $grade['grade']);
+      // Do not return 'absent' grades
+      if ($grade['grade'] == 'A') {
+        continue;
+      }
+
+      $el_weight = $line->find('.detvaha', 0);
+      $grade['weight'] = $el_weight ? $el_weight->plaintext : '';
+      preg_match('/([0-9]+)/', $grade['weight'], $weight_parts);
+      $grade['weight'] = reset($weight_parts);
 
       $el_date = $line->find('.detdatum', 0);
       $grade['date'] = $el_date ? $el_date->plaintext : '';
+      $grade['date'] = date('Y-m-d', strtotime($grade['date']));
 
       $el_description = $line->find('.detcaption', 0);
       $el_description = $el_description ? $el_description : $line->find('.detpozn2', 0);
-      $grade['description'] = trim($el_description ? $el_description->plaintext : '');
+      $grade['description'] = $el_description ? $el_description->plaintext : '';
+      $grade['description'] = trim($grade['description']);
+      // Remove brackets
+      $grade['description'] = preg_replace('/\((.+)\)/', '$1', $grade['description']);
+      $grade['description'] = strip_tags($grade['description']);
+      $grade['description'] = str_replace('... Podezřelé datum!', '', $grade['description']);
 
       $grades[] = $grade;
     }
@@ -237,7 +264,7 @@ class BakalariGradesAPI {
     return $this->orderBySubjects($grades);
   }
 
-  public function getGradesDetails() {  
+  public function getGradesDetails() {
     // Viewstate
     $viewstate = $this->fetchViewstate();
 
@@ -252,8 +279,8 @@ class BakalariGradesAPI {
     $eventvalidation = $this->parseEventValidation($html);
 
     // Subject page
-    $html = $this->fetchDetails($viewstate, $eventvalidation);    
-    
+    $html = $this->fetchDetails($viewstate, $eventvalidation);
+
     // Parse grades
     return $this->parseGradesDetails($html);
   }
