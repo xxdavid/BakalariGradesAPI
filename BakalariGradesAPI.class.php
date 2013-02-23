@@ -249,7 +249,11 @@ class BakalariGradesAPI {
 
       $el_date = $line->find('.detdatum', 0);
       $grade['date'] = $el_date ? $el_date->plaintext : '';
-      $grade['date'] = date('Y-m-d', strtotime($grade['date']));
+      if ($grade['date']) {
+        $date_parts = explode('.', $grade['date']);
+        $date = '20' . $date_parts[2] . '-' . $date_parts[1] . '-' . $date_parts[0];
+        $grade['date'] = date('Y-m-d', strtotime($date));
+      }
 
       $el_description = $line->find('.detcaption', 0);
       $el_description = $el_description ? $el_description : $line->find('.detpozn2', 0);
