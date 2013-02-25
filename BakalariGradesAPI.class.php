@@ -234,7 +234,7 @@ class BakalariGradesAPI {
       $el_grade = $line->find('.detznb', 0);
       $el_grade = $el_grade ? $el_grade : $line->find('.detznbnova', 0);
       $el_grade = $el_grade ? $el_grade : $line->find('.detzn', 0);
-      $grade['grade'] = trim ($el_grade ? $el_grade->plaintext : '');
+      $grade['grade'] = $el_grade && $el_grade->plaintext ? trim($el_grade->plaintext) : null;
       // Remove suspicious date exclamation mark
       $grade['grade'] = str_replace('!', '', $grade['grade']);
       // Do not return 'absent' grades
@@ -243,12 +243,14 @@ class BakalariGradesAPI {
       }
 
       $el_weight = $line->find('.detvaha', 0);
-      $grade['weight'] = $el_weight ? $el_weight->plaintext : '';
-      preg_match('/([0-9]+)/', $grade['weight'], $weight_parts);
-      $grade['weight'] = reset($weight_parts);
+      $grade['weight'] = $el_weight && $el_weight->plaintext ? $el_weight->plaintext : null;
+      if ($grade['weight']) {
+        preg_match('/([0-9]+)/', $grade['weight'], $weight_parts);
+        $grade['weight'] = reset($weight_parts);
+      }
 
       $el_date = $line->find('.detdatum', 0);
-      $grade['date'] = $el_date ? $el_date->plaintext : '';
+      $grade['date'] = $el_date && $el_date->plaintext ? $el_date->plaintext : null;
       if ($grade['date']) {
         $date_parts = explode('.', $grade['date']);
         $date = '20' . $date_parts[2] . '-' . $date_parts[1] . '-' . $date_parts[0];
@@ -258,11 +260,12 @@ class BakalariGradesAPI {
       $el_description = $line->find('.detcaption', 0);
       $el_description = $el_description ? $el_description : $line->find('.detpozn2', 0);
       $grade['description'] = $el_description ? $el_description->plaintext : '';
-      $grade['description'] = trim($grade['description']);
       // Remove brackets
       $grade['description'] = preg_replace('/\((.+)\)/', '$1', $grade['description']);
       $grade['description'] = strip_tags($grade['description']);
       $grade['description'] = str_replace('... Podezřelé datum!', '', $grade['description']);
+      $grade['description'] = trim($grade['description']);
+      $grade['description'] = $grade['description'] ? $grade['description'] : null;
 
       $grades[] = $grade;
     }
