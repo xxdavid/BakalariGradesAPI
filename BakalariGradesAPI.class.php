@@ -61,20 +61,6 @@ class BakalariGradesAPI
         return $matches[1];
     }
 
-    private function implodeParams($params)
-    {
-        $string = "";
-        $i = 0;
-        foreach ($params as $key => $val) {
-            if ($i > 0) {
-                $string .= "&";
-            }
-            $string .= urlencode($key) . "=" . urlencode($val);
-            $i++;
-        }
-        return $string;
-    }
-
     private function fetchLoginPage()
     {
         // Getting Viewstate and Cookies
@@ -108,7 +94,7 @@ class BakalariGradesAPI
         $this->lbver === '2.9.2013' ? $params[$this->loginInputName] = $this->username : $params['ctl00$cphmain$TextBoxjmeno'] = $this->username;
         $params['ctl00$cphmain$TextBoxheslo'] = $this->password;
         $params['ctl00$cphmain$ButtonPrihlas'] = '';
-        $implodedParams = $this->implodeParams($params);
+        $implodedParams = http_build_query($params);
 
         curl_setopt($ch2, CURLOPT_POSTFIELDS, $implodedParams);
         curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
@@ -150,7 +136,7 @@ class BakalariGradesAPI
         }
         $params['ctl00$cphmain$Flyout2$Checkdatumy'] = 'on';  // must be sent - lbver 17.5.2012
         $params['ctl00$cphmain$Checkdetail'] = 'on';
-        $implodedParams = $this->implodeParams($params);
+        $implodedParams = http_build_query($params);
         curl_setopt($ch4, CURLOPT_POSTFIELDS, $implodedParams);
         curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch4, CURLOPT_SSL_VERIFYPEER, false);
