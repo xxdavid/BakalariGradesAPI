@@ -14,26 +14,31 @@ date_default_timezone_set('Europe/Prague');
 require('example.config.php');
 
 require("BakalariGradesAPI.class.php");
-$bakalari = new BakalariGradesAPI($username, $password, $host, $cookieFile);
-$subjects = $bakalari->getGrades();
 
-foreach ($subjects as $subject => $grades): ?>
-    <h2><?php echo $subject ?></h2>
-    <table border=1>
-    <tr>
-        <th>Grade</th>
-        <th>Description</th>
-        <th>Date</th>
-    </tr>
-    <?php foreach ($grades as $grade): ?>
-    <tr>
-        <td><?php echo $grade['grade'] ?></td>
-        <td><?php echo $grade['description'] ?></td>
-        <td><?php echo $grade['date'] ?></td>
-    </tr>
-    <?php endforeach; ?>
-    </table>
-<?php endforeach; ?>
+try {
+    $bakalari = new BakalariGradesAPI($username, $password, $host, $cookieFile);
+    $subjects = $bakalari->getGrades();
 
+    foreach ($subjects as $subject => $grades): ?>
+        <h2><?php echo $subject ?></h2>
+        <table border=1>
+        <tr>
+            <th>Grade</th>
+            <th>Description</th>
+            <th>Date</th>
+        </tr>
+        <?php foreach ($grades as $grade): ?>
+        <tr>
+            <td><?php echo $grade['grade'] ?></td>
+            <td><?php echo $grade['description'] ?></td>
+            <td><?php echo $grade['date'] ?></td>
+        </tr>
+        <?php endforeach; ?>
+        </table>
+    <?php endforeach;
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
+?>
   </body>
 </html>

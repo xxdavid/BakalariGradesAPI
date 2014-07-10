@@ -94,6 +94,9 @@ class BakalariGradesAPI
         curl_setopt($ch2, CURLOPT_HEADER, true);
         curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
         $loginHtml = curl_exec($ch2);
+        if (strpos($loginHtml, 'Přihlášení neproběhlo v pořádku.')){
+            throw new \InvalidArgumentException("Login failed. That's probably because of wrong credentials.", 0);
+        }
         $this->gradesUrl = $this->lbver === "2.9.2013" ? $this->parseGradesUrl($loginHtml) : 'prehled.aspx?s=2';
         curl_close($ch2);
     }
