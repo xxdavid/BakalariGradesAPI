@@ -63,10 +63,8 @@ class BakalariGradesAPI
 
     private function fetchLoginPage()
     {
-        // Getting Viewstate and Cookies
         $ch1 = curl_init();
         curl_setopt($ch1, CURLOPT_COOKIEJAR, $this->cookie);
-        //curl_setopt($ch1, CURLOPT_COOKIEFILE, $this->cookie);
         curl_setopt($ch1, CURLOPT_URL, $this->host . "/login.aspx");
         curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch1, CURLOPT_HEADER, true);
@@ -78,9 +76,7 @@ class BakalariGradesAPI
 
     private function login($viewstate)
     {
-        // Logging in
         $ch2 = curl_init();
-        //curl_setopt($ch2, CURLOPT_COOKIEJAR, $this->cookie);
         curl_setopt($ch2, CURLOPT_COOKIEFILE, $this->cookie);
         curl_setopt($ch2, CURLOPT_URL, $this->host . "/login.aspx");
         curl_setopt($ch2, CURLOPT_POST, 1);
@@ -101,7 +97,7 @@ class BakalariGradesAPI
         curl_setopt($ch2, CURLOPT_HEADER, true);
         curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
         $loginHtml = curl_exec($ch2);
-        $this->lbver === "2.9.2013" ? $this->gradesUrl = $this->parseGradesUrl($loginHtml) : $this->gradesUrl = 'prehled.aspx?s=2';
+        $this->gradesUrl = $this->lbver === "2.9.2013" ? $this->parseGradesUrl($loginHtml) : 'prehled.aspx?s=2';
         curl_close($ch2);
     }
 
@@ -109,7 +105,6 @@ class BakalariGradesAPI
     {
         $ch3 = curl_init();
         curl_setopt($ch3, CURLOPT_RETURNTRANSFER, 1);
-        //curl_setopt($ch3, CURLOPT_COOKIEJAR, $this->cookie);
         curl_setopt($ch3, CURLOPT_COOKIEFILE, $this->cookie);
         curl_setopt($ch3, CURLOPT_URL, $this->host . '/' . $this->gradesUrl);
         curl_setopt($ch3, CURLOPT_SSL_VERIFYPEER, false);
@@ -120,7 +115,6 @@ class BakalariGradesAPI
 
     private function fetchDetails($viewstate, $eventvalidation, $weightAvailable)
     {
-        //Subject page
         $ch4 = curl_init();
         curl_setopt($ch4, CURLOPT_COOKIEFILE, $this->cookie);
         curl_setopt($ch4, CURLOPT_URL, $this->host . '/' . $this->gradesUrl);
@@ -140,7 +134,6 @@ class BakalariGradesAPI
         curl_setopt($ch4, CURLOPT_POSTFIELDS, $implodedParams);
         curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch4, CURLOPT_SSL_VERIFYPEER, false);
-        //curl_setopt($ch4, CURLOPT_HEADER, true);
         $html = curl_exec($ch4);
         curl_close($ch4);
         return $html;
@@ -228,7 +221,6 @@ class BakalariGradesAPI
 
     public function getGrades()
     {
-        // Viewstate
         $loginPageHtml = $this->fetchLoginPage();
         $LoginPageDom = str_get_html($loginPageHtml);
         $viewstate = $this->parseViewstate($LoginPageDom);
@@ -237,10 +229,8 @@ class BakalariGradesAPI
             $this->loginInputName = $this->parseLoginInputName($loginPageHtml);
         }
 
-        // Login
         $this->login($viewstate);
 
-        // Grades page
         // TODO: Does not return grades at first call, why?
         $html = $this->fetchGrades();
         if ($this->lbver === '31.8.2012') {
@@ -254,10 +244,8 @@ class BakalariGradesAPI
         // Check whether weight is available
         $weightAvailable = $this->isWeightAvailable($html);
 
-        // Details
         $html = $this->fetchDetails($viewstate, $eventvalidation, $weightAvailable);
 
-        // Parse grades
         return $this->parseGrades($html);
     }
 
