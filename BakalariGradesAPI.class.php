@@ -11,6 +11,9 @@ class BakalariGradesAPI {
   private $host;
   private $subjectID;
   private $cookie;
+  private $lbver;
+  private $loginInputName;
+  private $gradesUrl;
 
   public function __construct($username,$password,$host,$cookie) {
     $this->username = $username;
@@ -35,6 +38,28 @@ class BakalariGradesAPI {
     return substr($html, $eventValidationPostion1+76, $eventValidationPostion2 - $eventValidationPostion1 - 76);
   }
 
+  private function parseLbver($html){
+    $dom = str_get_html($html);
+    $class = $dom->find('.lbver'); //temporary variable because of PHP 5.3
+    return $class[0]->plaintext;
+  }
+  
+  private function parseLoginInputName($html)
+  {
+    $matches = array(); 
+    $pattern = "/dxo\.uniqueID = '(ctl00".'\$cphmain\$Txt'.".+)';/";
+    preg_match($pattern, $html, $matches);
+    return $matches[1];
+  }
+  
+  private function parseGradesUrl($html)
+  {
+    $matches = array(); 
+    $pattern = '/<a.* href="(prehled.aspx\?s=\d+)".*>(?:<.*>)*Průběžn&#225; klasifikace(?:<\/.*>)*<\/a>/';
+    preg_match($pattern, $html, $matches);
+    return $matches[1];
+  }
+
   private function implodeParams($params) {
     $string = "";
     $i = 0;
@@ -48,7 +73,7 @@ class BakalariGradesAPI {
     return $string;
   }
 
-  private function fetchViewstate() {
+  private function fetchLoginPage() {
     // Getting Viewstate and Cookies
     $ch1 = curl_init();
     curl_setopt($ch1, CURLOPT_COOKIEJAR, $this->cookie);
@@ -59,8 +84,7 @@ class BakalariGradesAPI {
     curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
     $html = curl_exec ($ch1);
     curl_close($ch1);
-    $viewstate = $this->parseViewstate($html);
-    return $viewstate;
+    return $html;
   }
 
   private function login($viewstate) {
@@ -70,13 +94,14 @@ class BakalariGradesAPI {
     curl_setopt($ch2, CURLOPT_COOKIEFILE, $this->cookie);
     curl_setopt($ch2, CURLOPT_URL, $this->host . "/login.aspx");
     curl_setopt($ch2, CURLOPT_POST, 1);
+    curl_setopt($ch2, CURLOPT_FOLLOWLOCATION, true);
 
     $params = array();
     $params['__LASTFOCUS'] = '';
     $params['__EVENTTARGET'] = '';
     $params['__EVENTARGUMENT'] = '';
     $params['__VIEWSTATE'] = $viewstate;
-    $params['ctl00$cphmain$TextBoxjmeno'] = $this->username;
+    $this->lbver === '2.9.2013' ? $params[$this->loginInputName] = $this->username : $params['ctl00$cphmain$TextBoxjmeno'] = $this->username;
     $params['ctl00$cphmain$TextBoxheslo'] = $this->password;
     $params['ctl00$cphmain$ButtonPrihlas'] = '';
     $implodedParams = $this->implodeParams($params);
@@ -86,6 +111,7 @@ class BakalariGradesAPI {
     curl_setopt($ch2, CURLOPT_HEADER, true);
     curl_setopt($ch2, CURLOPT_SSL_VERIFYPEER, false);
     $loginHtml = curl_exec($ch2);
+    $this->lbver === "2.9.2013" ? $this->gradesUrl = $this->parseGradesUrl($loginHtml) : $this->gradesUrl = 'prehled.aspx?s=2';
     curl_close($ch2);
   }
 
@@ -94,7 +120,7 @@ class BakalariGradesAPI {
     curl_setopt($ch3, CURLOPT_RETURNTRANSFER,1);
     //curl_setopt($ch3, CURLOPT_COOKIEJAR, $this->cookie);
     curl_setopt($ch3, CURLOPT_COOKIEFILE, $this->cookie);
-    curl_setopt($ch3, CURLOPT_URL,$this->host."/prehled.aspx?s=2");
+    curl_setopt($ch3, CURLOPT_URL, $this->host.'/' . $this->gradesUrl);
     curl_setopt($ch3, CURLOPT_SSL_VERIFYPEER, false);
     $html = curl_exec($ch3);
     curl_close($ch3);
@@ -105,7 +131,7 @@ class BakalariGradesAPI {
     //Subject page
     $ch4 = curl_init();
     curl_setopt($ch4, CURLOPT_COOKIEFILE, $this->cookie);
-    curl_setopt($ch4, CURLOPT_URL,$this->host."/prehled.aspx?s=2");
+    curl_setopt($ch4, CURLOPT_URL,$this->host. '/'. $this->gradesUrl);
     curl_setopt($ch4, CURLOPT_POST, 1);
     $params = array();
     $params['__EVENTTARGET'] = 'ctl00$cphmain$Checkdetail';
@@ -116,7 +142,7 @@ class BakalariGradesAPI {
     if ($weightAvailable) {
       $params['ctl00$cphmain$Flyout2$Checktypy'] = 'on';
     }
-    $params['ctl00$cphmain$Flyout2$Checkdatumy'] = 'on';  // must be sent - libver 17.5.2012
+    $params['ctl00$cphmain$Flyout2$Checkdatumy'] = 'on';  // must be sent - lbver 17.5.2012
     $params['ctl00$cphmain$Checkdetail'] = 'on';
     $implodedParams = $this->implodeParams($params);
     curl_setopt($ch4, CURLOPT_POSTFIELDS, $implodedParams);
@@ -125,7 +151,6 @@ class BakalariGradesAPI {
     //curl_setopt($ch4, CURLOPT_HEADER, true);
     $html = curl_exec($ch4);
     curl_close($ch4);
-    //echo htmlspecialchars($html);
     return $html;
   }
 
@@ -208,16 +233,23 @@ class BakalariGradesAPI {
 
   public function getGrades() {
     // Viewstate
-    $viewstate = $this->fetchViewstate();
-
+    $loginPageHtml = $this->fetchLoginPage();
+    $viewstate = $this->parseViewstate($loginPageHtml);
+    $this->lbver = $this->parseLbver($loginPageHtml);
+    if ($this->lbver === '2.9.2013'){
+        $this->loginInputName = $this->parseLoginInputName($loginPageHtml);
+    }
+    
     // Login
     $this->login($viewstate);
 
     // Grades page
     // TODO: Does not return grades at first call, why?
-    $html = $this->fetchGrades();
-    $html = $this->fetchGrades();   // not need for libver 17.5.2012
-
+    $html = $this->fetchGrades();    
+    if ($this->lbver === '31.8.2012'){
+        $html = $this->fetchGrades();
+    }
+    
     $viewstate = $this->parseViewstate($html);
     $eventvalidation = $this->parseEventValidation($html);
 
