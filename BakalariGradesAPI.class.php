@@ -26,24 +26,22 @@ class BakalariGradesAPI
         return (float) '0.1';
     }
 
-    private function parseViewstate($html)
+    private function parseViewstate($dom)
     {
-        $viewstatePosition1 = strpos($html, '<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="');
-        $viewstatePosition2 = strpos($html, '" />', $viewstatePosition1);
-        return substr($html, $viewstatePosition1 + 64, $viewstatePosition2 - $viewstatePosition1 - 64);
+        $elements = $dom->find('#__VIEWSTATE'); //temporary variable because of PHP 5.3
+        return $elements[0]->value;
     }
 
-    private function parseEventValidation($html)
+    private function parseEventValidation($dom)
     {
-        $eventValidationPostion1 = strpos($html, '<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="');
-        $eventValidationPostion2 = strpos($html, '" />', $eventValidationPostion1);
-        return substr($html, $eventValidationPostion1 + 76, $eventValidationPostion2 - $eventValidationPostion1 - 76);
+        $elements = $dom->find('#__EVENTVALIDATION');
+        return $elements[0]->value;
     }
 
     private function parseLbver($html)
     {
         $dom = str_get_html($html);
-        $class = $dom->find('.lbver'); //temporary variable because of PHP 5.3
+        $class = $dom->find('.lbver');
         return $class[0]->plaintext;
     }
 
@@ -246,7 +244,8 @@ class BakalariGradesAPI
     {
         // Viewstate
         $loginPageHtml = $this->fetchLoginPage();
-        $viewstate = $this->parseViewstate($loginPageHtml);
+        $LoginPageDom = str_get_html($loginPageHtml);
+        $viewstate = $this->parseViewstate($LoginPageDom);
         $this->lbver = $this->parseLbver($loginPageHtml);
         if ($this->lbver === '2.9.2013') {
             $this->loginInputName = $this->parseLoginInputName($loginPageHtml);
@@ -262,8 +261,9 @@ class BakalariGradesAPI
             $html = $this->fetchGrades();
         }
 
-        $viewstate = $this->parseViewstate($html);
-        $eventvalidation = $this->parseEventValidation($html);
+        $dom = str_get_html($html);
+        $viewstate = $this->parseViewstate($dom);
+        $eventvalidation = $this->parseEventValidation($dom);
 
         // Check whether weight is available
         $weightAvailable = $this->isWeightAvailable($html);
