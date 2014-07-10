@@ -28,21 +28,18 @@ class BakalariGradesAPI
 
     private function parseViewstate($dom)
     {
-        $elements = $dom->find('#__VIEWSTATE'); //temporary variable because of PHP 5.3
-        return $elements[0]->value;
+        return $dom->find('#__VIEWSTATE', 0)->value;
     }
 
     private function parseEventValidation($dom)
     {
-        $elements = $dom->find('#__EVENTVALIDATION');
-        return $elements[0]->value;
+        return $dom->find('#__EVENTVALIDATION', 0)->value;
     }
 
     private function parseLbver($html)
     {
         $dom = str_get_html($html);
-        $class = $dom->find('.lbver');
-        return $class[0]->plaintext;
+        return $dom->find('.lbver', 0)->plaintext;
     }
 
     private function parseLoginInputName($html)
