@@ -3,13 +3,9 @@ require('simple_html_dom.php');
 
 class BakalariGradesAPI {
 
-  private $html;
-  private $viewstate;
-  private $eventValidation;
   private $username;
   private $password;
   private $host;
-  private $subjectID;
   private $cookie;
   private $lbver;
   private $loginInputName;
