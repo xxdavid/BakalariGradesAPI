@@ -279,7 +279,7 @@ class BakalariGradesAPI {
     return $found != null;
   }
 
-  public function getGradesDetails() {
+  public function getGrades() {
     // Viewstate
     $viewstate = $this->fetchViewstate();
 
@@ -303,29 +303,9 @@ class BakalariGradesAPI {
     // Parse grades
     return $this->parseGradesDetails($html);
   }
-
-  public function getGrades($subjectID) {
-    // Viewstate
-    $viewstate = $this->fetchViewstate();
-
-    // Login
-    $this->login($viewstate);
-
-    // Grades page
-    // TODO: Does not return grades at first call, why?
-    $html = $this->fetchGrades();
-    $html = $this->fetchGrades();   // not need for libver 17.5.2012
-
-    $viewstate = $this->parseViewstate($html);
-    $eventvalidation = $this->parseEventValidation($html);
-
-    // Subject page
-    // TODO: Returns date only after browser page refresh, when cookie file is created, why?
-    $html = $this->fetchSubject($subjectID, $viewstate, $eventvalidation);
-
-    // Parse grades
-    $grades = $this->parseGrades($html);
-    return $grades;
-  }
+  
+    public function getGradesDetails() { //Backward compatibility alias
+        return $this->getGrades();
+    }
 
 }

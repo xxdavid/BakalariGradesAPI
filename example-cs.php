@@ -19,7 +19,7 @@ $bakalariCookie = "cookies.txt"; //soubor s cookies
 
 require("BakalariGradesAPI.class.php");
 $znamky = new BakalariGradesAPI($bakalariUsername,$bakalariPassword,$bakalariHost,$bakalariCookie);
-$subjects = $znamky->getGradesDetails();
+$subjects = $znamky->getGrades();
 
 foreach ($subjects as $subject => $grades) {
 
