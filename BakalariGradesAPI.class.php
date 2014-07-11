@@ -145,6 +145,7 @@ class BakalariGradesAPI
         $subjects = array();
         foreach ($grades as $grade) {
             $subject = $grade['subject'];
+            unset($grade['subject']);
             $subjects[$subject] = isset($subjects[$subject]) ? $subjects[$subject] : array();
             $subjects[$subject][] = $grade;
         }
