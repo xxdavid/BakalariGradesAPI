@@ -26,6 +26,6 @@
         "tracy/tracy": "dev-master"
     },
     "autoload": {
-        "classmap": ["BakalariGradesAPI.class.php", "BakalariGradesAPIMock.class.php"]
+        "classmap": ["src/"]
     }
 }

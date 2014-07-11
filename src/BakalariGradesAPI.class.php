@@ -1,6 +1,5 @@
 <?php
 
-require('vendor/autoload.php');
 use Sunra\PhpSimple\HtmlDomParser;
 
 class BakalariGradesAPI

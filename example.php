@@ -13,7 +13,7 @@ date_default_timezone_set('Europe/Prague');
 //Bakalari credentials and other setting
 require('example.config.php');
 
-require("BakalariGradesAPI.class.php");
+require('vendor/autoload.php');
 
 try {
     $bakalari = new BakalariGradesAPI($username, $password, $host, $cookieFile);
