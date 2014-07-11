@@ -1,6 +1,6 @@
 <?php
 
-require_once('BakalariGradesAPI.class.php');
+require_once('BakalariGradesAPI.php');
 
 class BakalariGradesAPIMock extends BakalariGradesAPI
 {
