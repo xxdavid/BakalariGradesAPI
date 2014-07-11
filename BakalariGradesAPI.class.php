@@ -24,7 +24,7 @@ class BakalariGradesAPI
 
     public function version()
     {
-        return (float) '0.1';
+        return (float) '1.0.0';
     }
 
     private function parseViewstate($dom)
