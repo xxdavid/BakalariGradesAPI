@@ -1,5 +1,5 @@
 {
-    "name": "xxdavid/bakalarigradesapi",
+    "name": "xxdavid/BakalariGradesAPI",
     "type": "library",
     "description": "An unofficial API for Bakalari",
     "homepage": "https://github.com/xxdavid/BakalariGradesAPI",
@@ -24,5 +24,8 @@
     "require-dev": {
         "nette/tester": "1.1.*@dev",
         "tracy/tracy": "dev-master"
+    },
+    "autoload": {
+        "classmap": ["BakalariGradesAPI.class.php", "BakalariGradesAPIMock.class.php"]
     }
 }

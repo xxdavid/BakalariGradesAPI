@@ -1,7 +1,5 @@
 <?php
 require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../BakalariGradesAPI.class.php';
-require __DIR__ . '/../BakalariGradesAPIMock.class.php';
 
 use Tracy\Debugger;
 Tester\Environment::setup();
