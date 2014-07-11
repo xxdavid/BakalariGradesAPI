@@ -1,5 +1,7 @@
 cookie.txt
 example.config.php
+vendor/
+composer.lock
 
 ### Sublime Text ###
 *.sublime-project

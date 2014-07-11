@@ -1,0 +1,24 @@
+{
+    "name": "xxdavid/bakalarigradesapi",
+    "type": "library",
+    "description": "An unofficial API for Bakalari",
+    "homepage": "https://github.com/xxdavid/BakalariGradesAPI",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Pavlík",
+            "homepage": "http://dpavlik.cz",
+            "role": "Developer"
+        },
+        {
+            "name": "Matouš Skála",
+            "homepage": "http://matousskala.cz",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "lib-curl": "*",
+        "sunra/php-simple-html-dom-parser": "v1.5.0"
+    }
+}

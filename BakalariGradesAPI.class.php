@@ -1,6 +1,7 @@
 <?php
 
-require('simple_html_dom.php');
+require('vendor/autoload.php');
+use Sunra\PhpSimple\HtmlDomParser;
 
 class BakalariGradesAPI
 {
@@ -38,7 +39,7 @@ class BakalariGradesAPI
 
     private function parseLbver($html)
     {
-        $dom = str_get_html($html);
+        $dom = HtmlDomParser::str_get_html($html);
         return $dom->find('.lbver', 0)->plaintext;
     }
 
@@ -153,7 +154,7 @@ class BakalariGradesAPI
     protected function parseGrades($source)
     {
         $grades = array();
-        $html = str_get_html($source);
+        $html = HtmlDomParser::str_get_html($source);
         if (!$html) {
             return;
         }
@@ -214,7 +215,7 @@ class BakalariGradesAPI
 
     private function isWeightAvailable($source)
     {
-        $html = str_get_html($source);
+        $html = HtmlDomParser::str_get_html($source);
         $found = $html->find('#cphmain_Flyout2_Checktypy', 0);
         return $found != null;
     }
@@ -222,7 +223,7 @@ class BakalariGradesAPI
     public function getGrades()
     {
         $loginPageHtml = $this->fetchLoginPage();
-        $LoginPageDom = str_get_html($loginPageHtml);
+        $LoginPageDom = HtmlDomParser::str_get_html($loginPageHtml);
         $viewstate = $this->parseViewstate($LoginPageDom);
         $this->lbver = $this->parseLbver($loginPageHtml);
         if ($this->lbver === '2.9.2013') {
@@ -237,7 +238,7 @@ class BakalariGradesAPI
             $html = $this->fetchGrades();
         }
 
-        $dom = str_get_html($html);
+        $dom = HtmlDomParser::str_get_html($html);
         $viewstate = $this->parseViewstate($dom);
         $eventvalidation = $this->parseEventValidation($dom);
 
