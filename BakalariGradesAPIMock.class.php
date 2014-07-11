@@ -1,13 +1,20 @@
 <?php
-require('BakalariGradesAPI.class.php');
 
-class BakalariGradesAPIMock extends BakalariGradesAPI {
+require_once('BakalariGradesAPI.class.php');
 
-  public function getGradesDetails() {
-    $file = 'podezrele-datum.html';
-    $html = file_get_contents(__DIR__ . '/test_source/' . $file);
-    $grades = $this->parseGrades($html);
-    return $grades;
-  }
+class BakalariGradesAPIMock extends BakalariGradesAPI
+{
+
+    private $html;
+
+    public function __construct($html)
+    {
+        $this->html = $html;
+    }
+
+    public function getGrades()
+    {
+        return $this->parseGrades($this->html);
+    }
 
 }
